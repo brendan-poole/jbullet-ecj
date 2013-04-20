@@ -1,0 +1,433 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0 = ../../../../../ecj/src/ec/gp/koza/koza.params
+
+generations = 1000
+
+gp.tc.size = 30
+
+gp.tc.0 = ec.gp.GPTreeConstraints
+gp.tc.0.name = tc0
+gp.tc.0.fset = f0
+gp.tc.0.init = ec.gp.koza.HalfBuilder
+gp.tc.0.returns = nil
+gp.tc.0.init.growp = 0
+gp.tc.0.init.min = 3
+gp.tc.0.init.max = 8
+
+gp.tc.1 = ec.gp.GPTreeConstraints
+gp.tc.1.name = tc1
+gp.tc.1.fset = f0
+gp.tc.1.init = ec.gp.koza.HalfBuilder
+gp.tc.1.returns = nil
+gp.tc.1.init.growp = 0.5
+gp.tc.1.init.min = 3
+gp.tc.1.init.max = 8
+
+gp.tc.2 = ec.gp.GPTreeConstraints
+gp.tc.2.name = tc2
+gp.tc.2.fset = f0
+gp.tc.2.init = ec.gp.koza.HalfBuilder
+gp.tc.2.returns = nil
+gp.tc.2.init.growp = 0.5
+gp.tc.2.init.min = 3
+gp.tc.2.init.max = 8
+
+gp.tc.3 = ec.gp.GPTreeConstraints
+gp.tc.3.name = tc3
+gp.tc.3.fset = f0
+gp.tc.3.init = ec.gp.koza.HalfBuilder
+gp.tc.3.returns = nil
+gp.tc.3.init.growp = 0.5
+gp.tc.3.init.min = 3
+gp.tc.3.init.max = 8
+
+gp.tc.4 = ec.gp.GPTreeConstraints
+gp.tc.4.name = tc4
+gp.tc.4.fset = f0
+gp.tc.4.init = ec.gp.koza.HalfBuilder
+gp.tc.4.returns = nil
+gp.tc.4.init.growp = 0.5
+gp.tc.4.init.min = 3
+gp.tc.4.init.max = 8
+
+gp.tc.5 = ec.gp.GPTreeConstraints
+gp.tc.5.name = tc5
+gp.tc.5.fset = f0
+gp.tc.5.init = ec.gp.koza.HalfBuilder
+gp.tc.5.returns = nil
+gp.tc.5.init.growp = 0.5
+gp.tc.5.init.min = 3
+gp.tc.5.init.max = 8
+
+gp.tc.6 = ec.gp.GPTreeConstraints
+gp.tc.6.name = tc6
+gp.tc.6.fset = f0
+gp.tc.6.init = ec.gp.koza.HalfBuilder
+gp.tc.6.returns = nil
+gp.tc.6.init.growp = 0.5
+gp.tc.6.init.min = 3
+gp.tc.6.init.max = 8
+
+gp.tc.7 = ec.gp.GPTreeConstraints
+gp.tc.7.name = tc7
+gp.tc.7.fset = f0
+gp.tc.7.init = ec.gp.koza.HalfBuilder
+gp.tc.7.returns = nil
+gp.tc.7.init.growp = 0.5
+gp.tc.7.init.min = 3
+gp.tc.7.init.max = 8
+
+gp.tc.7 = ec.gp.GPTreeConstraints
+gp.tc.7.name = tc7
+gp.tc.7.fset = f0
+gp.tc.7.init = ec.gp.koza.HalfBuilder
+gp.tc.7.returns = nil
+gp.tc.7.init.growp = 0.5
+gp.tc.7.init.min = 3
+gp.tc.7.init.max = 8
+
+gp.tc.8 = ec.gp.GPTreeConstraints
+gp.tc.8.name = tc8
+gp.tc.8.fset = f0
+gp.tc.8.init = ec.gp.koza.HalfBuilder
+gp.tc.8.returns = nil
+gp.tc.8.init.growp = 0.5
+gp.tc.8.init.min = 3
+gp.tc.8.init.max = 8
+
+gp.tc.9 = ec.gp.GPTreeConstraints
+gp.tc.9.name = tc9
+gp.tc.9.fset = f0
+gp.tc.9.init = ec.gp.koza.HalfBuilder
+gp.tc.9.returns = nil
+gp.tc.9.init.growp = 0.5
+gp.tc.9.init.min = 3
+gp.tc.9.init.max = 8
+
+gp.tc.10 = ec.gp.GPTreeConstraints
+gp.tc.10.name = tc10
+gp.tc.10.fset = f0
+gp.tc.10.init = ec.gp.koza.HalfBuilder
+gp.tc.10.returns = nil
+gp.tc.10.init.growp = 0.5
+gp.tc.10.init.min = 3
+gp.tc.10.init.max = 8
+
+gp.tc.11 = ec.gp.GPTreeConstraints
+gp.tc.11.name = tc11
+gp.tc.11.fset = f0
+gp.tc.11.init = ec.gp.koza.HalfBuilder
+gp.tc.11.returns = nil
+gp.tc.11.init.growp = 0.5
+gp.tc.11.init.min = 3
+gp.tc.11.init.max = 8
+
+gp.tc.12 = ec.gp.GPTreeConstraints
+gp.tc.12.name = tc12
+gp.tc.12.fset = f0
+gp.tc.12.init = ec.gp.koza.HalfBuilder
+gp.tc.12.returns = nil
+gp.tc.12.init.growp = 0.5
+gp.tc.12.init.min = 3
+gp.tc.12.init.max = 8
+
+gp.tc.13 = ec.gp.GPTreeConstraints
+gp.tc.13.name = tc13
+gp.tc.13.fset = f0
+gp.tc.13.init = ec.gp.koza.HalfBuilder
+gp.tc.13.returns = nil
+gp.tc.13.init.growp = 0.5
+gp.tc.13.init.min = 3
+gp.tc.13.init.max = 8
+
+gp.tc.14 = ec.gp.GPTreeConstraints
+gp.tc.14.name = tc14
+gp.tc.14.fset = f0
+gp.tc.14.init = ec.gp.koza.HalfBuilder
+gp.tc.14.returns = nil
+gp.tc.14.init.growp = 0.5
+gp.tc.14.init.min = 3
+gp.tc.14.init.max = 8
+
+gp.tc.15 = ec.gp.GPTreeConstraints
+gp.tc.15.name = tc15
+gp.tc.15.fset = f0
+gp.tc.15.init = ec.gp.koza.HalfBuilder
+gp.tc.15.returns = nil
+gp.tc.15.init.growp = 0.5
+gp.tc.15.init.min = 3
+gp.tc.15.init.max = 8
+
+gp.tc.16 = ec.gp.GPTreeConstraints
+gp.tc.16.name = tc16
+gp.tc.16.fset = f0
+gp.tc.16.init = ec.gp.koza.HalfBuilder
+gp.tc.16.returns = nil
+gp.tc.16.init.growp = 0.5
+gp.tc.16.init.min = 3
+gp.tc.16.init.max = 8
+
+gp.tc.17 = ec.gp.GPTreeConstraints
+gp.tc.17.name = tc17
+gp.tc.17.fset = f0
+gp.tc.17.init = ec.gp.koza.HalfBuilder
+gp.tc.17.returns = nil
+gp.tc.17.init.growp = 0.5
+gp.tc.17.init.min = 3
+gp.tc.17.init.max = 8
+
+gp.tc.18 = ec.gp.GPTreeConstraints
+gp.tc.18.name = tc18
+gp.tc.18.fset = f0
+gp.tc.18.init = ec.gp.koza.HalfBuilder
+gp.tc.18.returns = nil
+gp.tc.18.init.growp = 0.5
+gp.tc.18.init.min = 3
+gp.tc.18.init.max = 8
+
+gp.tc.19 = ec.gp.GPTreeConstraints
+gp.tc.19.name = tc19
+gp.tc.19.fset = f0
+gp.tc.19.init = ec.gp.koza.HalfBuilder
+gp.tc.19.returns = nil
+gp.tc.19.init.growp = 0.5
+gp.tc.19.init.min = 3
+gp.tc.19.init.max = 8
+
+gp.tc.20 = ec.gp.GPTreeConstraints
+gp.tc.20.name = tc20
+gp.tc.20.fset = f0
+gp.tc.20.init = ec.gp.koza.HalfBuilder
+gp.tc.20.returns = nil
+gp.tc.20.init.growp = 0.5
+gp.tc.20.init.min = 3
+gp.tc.20.init.max = 8
+
+gp.tc.21 = ec.gp.GPTreeConstraints
+gp.tc.21.name = tc21
+gp.tc.21.fset = f0
+gp.tc.21.init = ec.gp.koza.HalfBuilder
+gp.tc.21.returns = nil
+gp.tc.21.init.growp = 0.5
+gp.tc.21.init.min = 3
+gp.tc.21.init.max = 8
+
+gp.tc.22 = ec.gp.GPTreeConstraints
+gp.tc.22.name = tc22
+gp.tc.22.fset = f0
+gp.tc.22.init = ec.gp.koza.HalfBuilder
+gp.tc.22.returns = nil
+gp.tc.22.init.growp = 0.5
+gp.tc.22.init.min = 3
+gp.tc.22.init.max = 8
+
+gp.tc.23 = ec.gp.GPTreeConstraints
+gp.tc.23.name = tc23
+gp.tc.23.fset = f0
+gp.tc.23.init = ec.gp.koza.HalfBuilder
+gp.tc.23.returns = nil
+gp.tc.23.init.growp = 0.5
+gp.tc.23.init.min = 3
+gp.tc.23.init.max = 8
+
+gp.tc.24 = ec.gp.GPTreeConstraints
+gp.tc.24.name = tc24
+gp.tc.24.fset = f0
+gp.tc.24.init = ec.gp.koza.HalfBuilder
+gp.tc.24.returns = nil
+gp.tc.24.init.growp = 0.5
+gp.tc.24.init.min = 3
+gp.tc.24.init.max = 8
+
+gp.tc.25 = ec.gp.GPTreeConstraints
+gp.tc.25.name = tc25
+gp.tc.25.fset = f0
+gp.tc.25.init = ec.gp.koza.HalfBuilder
+gp.tc.25.returns = nil
+gp.tc.25.init.growp = 0.5
+gp.tc.25.init.min = 3
+gp.tc.25.init.max = 8
+
+gp.tc.26 = ec.gp.GPTreeConstraints
+gp.tc.26.name = tc26
+gp.tc.26.fset = f0
+gp.tc.26.init = ec.gp.koza.HalfBuilder
+gp.tc.26.returns = nil
+gp.tc.26.init.growp = 0.5
+gp.tc.26.init.min = 3
+gp.tc.26.init.max = 8
+
+gp.tc.27 = ec.gp.GPTreeConstraints
+gp.tc.27.name = tc27
+gp.tc.27.fset = f0
+gp.tc.27.init = ec.gp.koza.HalfBuilder
+gp.tc.27.returns = nil
+gp.tc.27.init.growp = 0.5
+gp.tc.27.init.min = 3
+gp.tc.27.init.max = 8
+
+gp.tc.28 = ec.gp.GPTreeConstraints
+gp.tc.28.name = tc28
+gp.tc.28.fset = f0
+gp.tc.28.init = ec.gp.koza.HalfBuilder
+gp.tc.28.returns = nil
+gp.tc.28.init.growp = 0.5
+gp.tc.28.init.min = 3
+gp.tc.28.init.max = 8
+
+gp.tc.29 = ec.gp.GPTreeConstraints
+gp.tc.29.name = tc29
+gp.tc.29.fset = f0
+gp.tc.29.init = ec.gp.koza.HalfBuilder
+gp.tc.29.returns = nil
+gp.tc.29.init.growp = 0.5
+gp.tc.29.init.min = 3
+gp.tc.29.init.max = 8
+
+
+# Stolen from koza/params -- overwriting just
+# a little for readability
+# You need to create at least one function set, 
+# called "f0", which your first tree will use.  
+
+gp.fs.size = 1
+
+gp.fs.0.name = f0
+gp.fs.0.info = ec.gp.GPFuncInfo
+gp.fs.0.size = 12
+gp.fs.0 = ec.gp.GPFunctionSet
+gp.fs.0.func.0 = ec.app.physics.func.Sin
+gp.fs.0.func.0.nc = nc1
+gp.fs.0.func.1 = ec.app.physics.func.Add
+gp.fs.0.func.1.nc = nc2
+gp.fs.0.func.2 = ec.app.physics.func.Mul
+gp.fs.0.func.2.nc = nc2
+gp.fs.0.func.3 = ec.app.physics.func.Sub
+gp.fs.0.func.3.nc = nc2
+gp.fs.0.func.4 = ec.app.physics.func.Div
+gp.fs.0.func.4.nc = nc2
+gp.fs.0.func.5 = ec.app.physics.func.RegERC
+gp.fs.0.func.5.nc = nc0
+gp.fs.0.func.6 = ec.app.physics.func.RagdollAngularVelocityERC
+gp.fs.0.func.6.nc = nc0
+gp.fs.0.func.7 = ec.app.physics.func.RagdollOrientationERC
+gp.fs.0.func.7.nc = nc0
+gp.fs.0.func.8 = ec.app.physics.func.RagdollCollisionERC
+gp.fs.0.func.8.nc = nc0
+gp.fs.0.func.9 = ec.app.physics.func.Cos
+gp.fs.0.func.9.nc = nc1
+gp.fs.0.func.10 = ec.app.physics.func.IfGT
+gp.fs.0.func.10.nc = nc3
+gp.fs.0.func.11 = ec.app.physics.func.X
+gp.fs.0.func.11.nc = nc0
+
+#
+# We specify our problem here
+#
+
+eval.problem = ec.app.physics.PhysicsProblem
+eval.problem.data = ec.app.physics.PhysicsData
+# ADFs use the same data type typically -- we need to include
+# this even if we're not implementing ADFs
+eval.problem.stack.context.data = ec.app.physics.PhysicsData
+
+# The size of our training set, by default, is 20
+eval.problem.size = 20
+
+pop.subpop.0.size =			1000
+
+# one tree for each joint
+pop.subpop.0.species.ind.numtrees = 30
+
+pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.0.tc = tc0
+pop.subpop.0.species.ind.tree.1 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.1.tc = tc1
+pop.subpop.0.species.ind.tree.2 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.2.tc = tc2
+pop.subpop.0.species.ind.tree.3 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.3.tc = tc3
+pop.subpop.0.species.ind.tree.4 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.4.tc = tc4
+pop.subpop.0.species.ind.tree.5 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.5.tc = tc5
+pop.subpop.0.species.ind.tree.6 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.6.tc = tc6
+pop.subpop.0.species.ind.tree.7 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.7.tc = tc7
+pop.subpop.0.species.ind.tree.8 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.8.tc = tc8
+pop.subpop.0.species.ind.tree.9 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.9.tc = tc9
+pop.subpop.0.species.ind.tree.10 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.10.tc = tc10
+pop.subpop.0.species.ind.tree.11 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.11.tc = tc11
+pop.subpop.0.species.ind.tree.12 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.12.tc = tc12
+pop.subpop.0.species.ind.tree.13 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.13.tc = tc13
+pop.subpop.0.species.ind.tree.14 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.14.tc = tc14
+pop.subpop.0.species.ind.tree.15 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.15.tc = tc15
+pop.subpop.0.species.ind.tree.16 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.16.tc = tc16
+pop.subpop.0.species.ind.tree.17 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.17.tc = tc17
+pop.subpop.0.species.ind.tree.18 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.18.tc = tc18
+pop.subpop.0.species.ind.tree.19 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.19.tc = tc19
+pop.subpop.0.species.ind.tree.20 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.20.tc = tc20
+pop.subpop.0.species.ind.tree.21 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.21.tc = tc21
+pop.subpop.0.species.ind.tree.22 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.22.tc = tc22
+pop.subpop.0.species.ind.tree.23 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.23.tc = tc23
+pop.subpop.0.species.ind.tree.24 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.24.tc = tc24
+pop.subpop.0.species.ind.tree.25 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.25.tc = tc25
+pop.subpop.0.species.ind.tree.26 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.26.tc = tc26
+pop.subpop.0.species.ind.tree.27 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.27.tc = tc27
+pop.subpop.0.species.ind.tree.28 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.28.tc = tc28
+pop.subpop.0.species.ind.tree.29 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.29.tc = tc29
+
+checkpoint = false
+checkpoint-modulo = 1
+
+stat.num-children = 1
+stat.child.0 = ec.app.gui.SimpleXYSeriesChartStatistics
+stat.child.0.title = Best of Generation
+stat.child.0.x-axis-label = generation
+stat.child.0.y-axis-label = value
+
+#stat.child.1 = ec.app.gui.SimpleBarChartStatistics
+#stat.child.1.title = Best of Generation
+#stat.child.1.x-axis-label = generation
+#stat.child.1.y-axis-label = value
+
+pop.subpops.0.portrayal=ec.display.portrayal.PhysicsPortrayal
+
+stat = ec.app.physics.PhysicsStatistics
+
+# one thread
+evalthreads = 				4
+breedthreads = 				4
+
+seed.0 = 				4357
+seed.1 = 				4358
+seed.2 = 				4359
+seed.3 = 				4360
+
+

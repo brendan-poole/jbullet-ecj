@@ -1,0 +1,198 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0 = ../../gp/koza/koza.params
+
+
+gp.tc.size = 2
+
+gp.tc.0 = ec.gp.GPTreeConstraints
+gp.tc.0.name = tc0
+gp.tc.0.fset = f0
+gp.tc.0.init = ec.gp.koza.HalfBuilder
+gp.tc.0.returns = nil
+gp.tc.0.init.growp = 0
+gp.tc.0.init.min = 1
+gp.tc.0.init.max = 1
+
+gp.tc.1 = ec.gp.GPTreeConstraints
+gp.tc.1.name = tc1
+gp.tc.1.fset = f1
+gp.tc.1.init = ec.gp.koza.HalfBuilder
+gp.tc.1.returns = nil
+gp.tc.1.init.growp = 0.5
+gp.tc.1.init.min = 2
+gp.tc.1.init.max = 6
+
+
+# Stolen from koza/params -- overwriting just
+# a little for readability
+# You need to create at least one function set, 
+# called "f0", which your first tree will use.  
+
+gp.fs.size = 2
+
+gp.fs.0.name = f0
+gp.fs.0.info = ec.gp.GPFuncInfo
+gp.fs.0.size = 6
+gp.fs.0 = ec.gp.GPFunctionSet
+gp.fs.0.func.0 = ec.gp.ADF
+gp.fs.0.func.0.nc = nc0
+gp.fs.0.func.0.tree = 30
+gp.fs.0.func.0.name = 0
+gp.fs.0.func.1 = ec.gp.ADF
+gp.fs.0.func.1.nc = nc0
+gp.fs.0.func.1.tree = 31
+gp.fs.0.func.1.name = 0
+gp.fs.0.func.2 = ec.gp.ADF
+gp.fs.0.func.2.nc = nc0
+gp.fs.0.func.2.tree = 32
+gp.fs.0.func.2.name = 0
+gp.fs.0.func.3 = ec.gp.ADF
+gp.fs.0.func.3.nc = nc0
+gp.fs.0.func.3.tree = 33
+gp.fs.0.func.3.name = 0
+gp.fs.0.func.4 = ec.gp.ADF
+gp.fs.0.func.4.nc = nc0
+gp.fs.0.func.4.tree = 34
+gp.fs.0.func.4.name = 0
+gp.fs.0.func.5 = ec.app.physics.func.Zero
+gp.fs.0.func.5.nc = nc0
+
+gp.fs.1.name = f1
+gp.fs.1.info = ec.gp.GPFuncInfo
+gp.fs.1.size = 12
+gp.fs.1 = ec.gp.GPFunctionSet
+gp.fs.1.func.0 = ec.app.physics.func.Sin
+gp.fs.1.func.0.nc = nc1
+gp.fs.1.func.1 = ec.app.physics.func.Add
+gp.fs.1.func.1.nc = nc2
+gp.fs.1.func.2 = ec.app.physics.func.Mul
+gp.fs.1.func.2.nc = nc2
+gp.fs.1.func.3 = ec.app.physics.func.Sub
+gp.fs.1.func.3.nc = nc2
+gp.fs.1.func.4 = ec.app.physics.func.Div
+gp.fs.1.func.4.nc = nc2
+gp.fs.1.func.5 = ec.app.physics.func.RegERC
+gp.fs.1.func.5.nc = nc0
+gp.fs.1.func.6 = ec.app.physics.func.X
+gp.fs.1.func.6.nc = nc0
+gp.fs.1.func.7 = ec.app.physics.func.Mod
+gp.fs.1.func.7.nc = nc2
+gp.fs.1.func.8 = ec.app.physics.func.One
+gp.fs.1.func.8.nc = nc0
+gp.fs.1.func.9 = ec.app.physics.func.RagdollCentreOfMassPointERC
+gp.fs.1.func.9.nc = nc0
+gp.fs.1.func.10 = ec.app.physics.func.RagdollAngularVelocityERC
+gp.fs.1.func.10.nc = nc0
+gp.fs.1.func.11 = ec.app.physics.func.RagdollOrientationERC
+gp.fs.1.func.11.nc = nc0
+
+#
+# We specify our problem here
+#
+
+eval.problem = ec.app.physics.PhysicsProblem
+eval.problem.data = ec.app.physics.PhysicsData
+# ADFs use the same data type typically -- we need to include
+# this even if we're not implementing ADFs
+eval.problem.stack.context.data = ec.app.physics.PhysicsData
+
+# The size of our training set, by default, is 20
+eval.problem.size = 20
+
+pop.subpop.0.size =			1024
+
+# one tree for each joint
+pop.subpop.0.species.ind.numtrees = 35
+pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.0.tc = tc0
+pop.subpop.0.species.ind.tree.1 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.1.tc = tc0
+pop.subpop.0.species.ind.tree.2 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.2.tc = tc0
+pop.subpop.0.species.ind.tree.3 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.3.tc = tc0
+pop.subpop.0.species.ind.tree.4 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.4.tc = tc0
+pop.subpop.0.species.ind.tree.5 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.5.tc = tc0
+pop.subpop.0.species.ind.tree.6 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.6.tc = tc0
+pop.subpop.0.species.ind.tree.7 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.7.tc = tc0
+pop.subpop.0.species.ind.tree.8 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.8.tc = tc0
+pop.subpop.0.species.ind.tree.9 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.9.tc = tc0
+pop.subpop.0.species.ind.tree.10 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.10.tc = tc0
+pop.subpop.0.species.ind.tree.11 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.11.tc = tc0
+pop.subpop.0.species.ind.tree.12 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.12.tc = tc0
+pop.subpop.0.species.ind.tree.13 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.13.tc = tc0
+pop.subpop.0.species.ind.tree.14 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.14.tc = tc0
+pop.subpop.0.species.ind.tree.15 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.15.tc = tc0
+pop.subpop.0.species.ind.tree.16 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.16.tc = tc0
+pop.subpop.0.species.ind.tree.17 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.17.tc = tc0
+pop.subpop.0.species.ind.tree.18 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.18.tc = tc0
+pop.subpop.0.species.ind.tree.19 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.19.tc = tc0
+pop.subpop.0.species.ind.tree.20 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.20.tc = tc0
+pop.subpop.0.species.ind.tree.21 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.21.tc = tc0
+pop.subpop.0.species.ind.tree.22 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.22.tc = tc0
+pop.subpop.0.species.ind.tree.23 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.23.tc = tc0
+pop.subpop.0.species.ind.tree.24 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.24.tc = tc0
+pop.subpop.0.species.ind.tree.25 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.25.tc = tc0
+pop.subpop.0.species.ind.tree.26 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.26.tc = tc0
+pop.subpop.0.species.ind.tree.27 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.27.tc = tc0
+pop.subpop.0.species.ind.tree.28 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.28.tc = tc0
+pop.subpop.0.species.ind.tree.29 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.29.tc = tc0
+
+pop.subpop.0.species.ind.tree.30 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.30.tc = tc1
+pop.subpop.0.species.ind.tree.31 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.31.tc = tc1
+pop.subpop.0.species.ind.tree.32 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.32.tc = tc1
+pop.subpop.0.species.ind.tree.33 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.33.tc = tc1
+pop.subpop.0.species.ind.tree.34 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.34.tc = tc1
+
+
+checkpoint = true
+checkpoint-modulo = 1
+
+stat.num-children = 1
+stat.child.0 = ec.app.gui.SimpleXYSeriesChartStatistics
+stat.child.0.title = Best of Generation
+stat.child.0.x-axis-label = generation
+stat.child.0.y-axis-label = value
+
+#stat.child.1 = ec.app.gui.SimpleBarChartStatistics
+#stat.child.1.title = Best of Generation
+#stat.child.1.x-axis-label = generation
+#stat.child.1.y-axis-label = value
+
+pop.subpops.0.portrayal=ec.display.portrayal.PhysicsPortrayal
+
+stat = ec.app.physics.PhysicsStatistics
