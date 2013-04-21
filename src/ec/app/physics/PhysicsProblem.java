@@ -3,6 +3,7 @@ package ec.app.physics;
 import com.bulletphysics.demos.opengl.LWJGL;
 import ec.util.*;
 import ec.*;
+import ec.app.physics.RagDoll.BodyPart;
 import ec.gp.*;
 import ec.gp.koza.*;
 import ec.simple.*;
@@ -77,39 +78,33 @@ public class PhysicsProblem extends GPProblem implements SimpleProblemForm {
                     }
                 }
 
-                this.runFrame(state, ind, subpopulation, threadnum, frame, model);
+                try {
+                	this.runFrame(state, ind, subpopulation, threadnum, frame, model);
+                } catch(Exception e) {
+                	System.out.println(e.getMessage());
+                	sum = 0;
+                	break;
+                }
 
                 Vector3f v = new Vector3f();
-                model.ragdolls.get(0).bodies[2].getCenterOfMassPosition(v);
-
-                sum += v.y / 2000f;
+                model.ragdolls.get(0).bodies[BodyPart.BODYPART_HEAD.ordinal()].getCenterOfMassPosition(v);
 
                 // ragdoll starts in the air so let land before evaluating
-                if(frame > 100 && v.y > max)
-                    max = v.y;
-
-                if(v.y < 0)
-                    break;
-                else
-                    hits++;
-
+                if(frame > 100) {
+                    sum += (v.y+ 15) / 1000f;
+                }
                 frame++;
             }
-            System.out.print("time: "+(System.currentTimeMillis() - t));
+            System.out.print("time(ms): "+(System.currentTimeMillis() - t));
 
             Vector3f v = new Vector3f();
-            model.ragdolls.get(0).bodies[2].getCenterOfMassPosition(v);
-            //result = Math.abs(1100 - (Math.abs(v.x) + Math.abs(v.y)));
-            //result = 100 - sum;
-            //System.out.println(sum);
-            //if(sum < -2) result = 99999999;
-            //result = 100 - max;
-            result = 1000 - hits;
+            model.ragdolls.get(0).bodies[BodyPart.BODYPART_HEAD.ordinal()].getCenterOfMassPosition(v);
+            System.out.println(" average y: "+sum);
 
             KozaFitness f = ((KozaFitness) ind.fitness);
-            f.setStandardizedFitness(state, (float) result);
+            f.setStandardizedFitness(state, (float) (1-(sum/(1+sum))));
             ind.evaluated = true;
-            System.out.println(" fitness: " + f.standardizedFitness());
+            System.out.println(" adjusted fitness: " + f.adjustedFitness());
 
             if (model.visible) {
                 Display.destroy();

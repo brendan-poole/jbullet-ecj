@@ -337,7 +337,7 @@ eval.problem.stack.context.data = ec.app.physics.PhysicsData
 # The size of our training set, by default, is 20
 eval.problem.size = 20
 
-pop.subpop.0.size =			1000
+pop.subpop.0.size =			100
 
 # one tree for each joint
 pop.subpop.0.species.ind.numtrees = 30
@@ -422,8 +422,8 @@ pop.subpops.0.portrayal=ec.display.portrayal.PhysicsPortrayal
 stat = ec.app.physics.PhysicsStatistics
 
 # one thread
-evalthreads = 				4
-breedthreads = 				4
+evalthreads = 				1
+breedthreads = 				1
 
 seed.0 = 				4357
 seed.1 = 				4358

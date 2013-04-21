@@ -345,6 +345,7 @@ public class PhysicsModel extends DemoApplication {
     public void clientMoveAndDisplay() {
         if (visible) {
             gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    		while(clock.getTimeMicroseconds()<1000000f/60f) {  }
         }
         for(int i = 0;i < 30;i++)
             this.ragdolls.get(0).motors[i].targetVelocity = inputs[i].getValue();
