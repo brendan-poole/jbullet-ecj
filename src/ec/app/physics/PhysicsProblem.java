@@ -20,7 +20,7 @@ public class PhysicsProblem extends GPProblem implements SimpleProblemForm {
     public int trainingSetSize;
     // we'll need to deep clone this one though.
     public PhysicsData input;
-    public PhysicsModel model;
+    public transient PhysicsModel model;
     public static boolean paused;
     public Individual monitorInd;
 
