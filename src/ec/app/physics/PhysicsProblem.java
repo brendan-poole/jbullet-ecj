@@ -90,9 +90,9 @@ public class PhysicsProblem extends GPProblem implements SimpleProblemForm {
                 model.ragdolls.get(0).bodies[BodyPart.BODYPART_HEAD.ordinal()].getCenterOfMassPosition(v);
 
                 // ragdoll starts in the air so let land before evaluating
-                //if(frame > 100) {
+                if(frame > 100) {
                     sum += (v.y+ 15) / 1000f;
-                //}
+                }
                 frame++;
             }
             System.out.print("time(ms): "+(System.currentTimeMillis() - t));
