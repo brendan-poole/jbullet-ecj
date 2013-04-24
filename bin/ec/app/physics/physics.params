@@ -337,7 +337,7 @@ eval.problem.stack.context.data = ec.app.physics.PhysicsData
 # The size of our training set, by default, is 20
 eval.problem.size = 20
 
-pop.subpop.0.size =			1000
+pop.subpop.0.size =			100
 
 # one tree for each joint
 pop.subpop.0.species.ind.numtrees = 30
@@ -406,28 +406,29 @@ pop.subpop.0.species.ind.tree.29.tc = tc0
 checkpoint = true
 checkpoint-modulo = 1
 
-stat.num-children = 1
+stat.num-children = 2
 stat.child.0 = ec.app.gui.SimpleXYSeriesChartStatistics
 stat.child.0.title = Best of Generation
 stat.child.0.x-axis-label = generation
 stat.child.0.y-axis-label = value
 
-#stat.child.1 = ec.app.gui.SimpleBarChartStatistics
-#stat.child.1.title = Best of Generation
-#stat.child.1.x-axis-label = generation
-#stat.child.1.y-axis-label = value
+stat.child.1 = ec.app.physics.PhysicsChartStatistics
+stat.child.1.title = Height
+stat.child.1.x-axis-label = frame
+stat.child.1.y-axis-label = value
 
 pop.subpops.0.portrayal=ec.display.portrayal.PhysicsPortrayal
 
 stat = ec.app.physics.PhysicsStatistics
 
 # one thread
-evalthreads = 				1
-breedthreads = 				1
+evalthreads = 				4
+breedthreads = 				4
 
-seed.0 = 				4358
-seed.1 = 				4358
-seed.2 = 				4359
-seed.3 = 				4360
+seed.0 = 				435
+seed.1 = 				43
+seed.2 = 				4
+seed.3 = 				1
+
 
 
