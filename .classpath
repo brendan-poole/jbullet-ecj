@@ -13,5 +13,6 @@
 	<classpathentry kind="var" path="ecj/libraries/jcommon-1.0.0.jar"/>
 	<classpathentry kind="var" path="ecj/libraries/jfreechart-1.0.1.jar"/>
 	<classpathentry kind="var" path="ecj/libraries/jzlib-1.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/guava-14.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

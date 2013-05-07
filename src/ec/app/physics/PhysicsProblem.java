@@ -69,7 +69,7 @@ public class PhysicsProblem extends GPProblem implements SimpleProblemForm {
 
             int frame = 0;
             long t = System.currentTimeMillis();
-            while (frame < 1000) {
+            while (frame < 2000) {
                 while (paused) {
                     try {
                         Thread.currentThread().sleep(1000);
@@ -90,13 +90,16 @@ public class PhysicsProblem extends GPProblem implements SimpleProblemForm {
                 model.ragdolls.get(0).bodies[BodyPart.BODYPART_HEAD.ordinal()].getCenterOfMassPosition(v);
 
                 // ragdoll starts in the air so let land before evaluating
-                if(frame > 100) {
-                    sum += (v.y+ 15) / 1000f;
-                }
+      
+                //if(frame > 100 && v.y > max)
+                //	max = v.y;
+                sum += (v.y+ 15) / 2000f;
+            
+      
                 frame++;
             }
             System.out.print("time(ms): "+(System.currentTimeMillis() - t));
-
+           // sum = max+15;
             Vector3f v = new Vector3f();
             model.ragdolls.get(0).bodies[BodyPart.BODYPART_HEAD.ordinal()].getCenterOfMassPosition(v);
             System.out.println(" average y: "+sum);

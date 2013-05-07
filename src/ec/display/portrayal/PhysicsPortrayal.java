@@ -72,9 +72,9 @@ public class PhysicsPortrayal extends IndividualPortrayal implements KeyListener
         textPane.setCaretPosition(0);
         state.output.removeLog(printIndividualLog);
         printIndividualWriter.reset();
-        if(((PhysicsStatistics) this.currentState.statistics).best_of_run[0] != null) {
+        if(((PhysicsStatistics) this.currentState.statistics).bestSoFar[0] != null) {
         printIndividualLog = state.output.addLog(printIndividualWriter, restarter, 0, false, false);
-        ((PhysicsStatistics) this.currentState.statistics).best_of_run[0]
+        ((PhysicsStatistics) this.currentState.statistics).bestSoFar[0]
         .printIndividualForHumans(state, printIndividualLog, Output.V_NO_GENERAL);
         textBestPane.setText(printIndividualWriter.toString());
         textBestPane.setCaretPosition(0);
@@ -90,7 +90,7 @@ public class PhysicsPortrayal extends IndividualPortrayal implements KeyListener
 
     public void keyTyped(KeyEvent ke) {
         if (ke.getSource() == this.textBestPane) {
-            this.currentIndividual = ((PhysicsStatistics) this.currentState.statistics).best_of_run[0];
+            this.currentIndividual = ((PhysicsStatistics) this.currentState.statistics).bestSoFar[0];
         }
 
         PhysicsProblem.paused = true;

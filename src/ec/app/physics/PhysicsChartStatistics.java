@@ -30,9 +30,9 @@ public class PhysicsChartStatistics extends XYSeriesChartStatistics {
 	public void postEvaluationStatistics(EvolutionState state) {
 		super.postEvaluationStatistics(state);
 		
-		if (((PhysicsStatistics) state.statistics).best_of_run[0] != null) {
+		if (((PhysicsStatistics) state.statistics).bestSoFar[0] != null) {
 			this.seriesCollection.getSeries(0).clear();
-			Individual best = ((PhysicsStatistics) state.statistics).best_of_run[0];
+			Individual best = ((PhysicsStatistics) state.statistics).bestSoFar[0];
 			PhysicsProblem.paused = true;
 			PhysicsProblem p = (PhysicsProblem) state.evaluator.p_problem.clone();
 			p.model = new PhysicsModel(LWJGL.getGL(), false);
