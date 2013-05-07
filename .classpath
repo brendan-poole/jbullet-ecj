@@ -5,14 +5,14 @@
 	<classpathentry kind="var" path="jbullet/lib/lwjgl/jinput.jar"/>
 	<classpathentry kind="var" path="jbullet/lib/lwjgl/lwjgl_util.jar"/>
 	<classpathentry kind="var" path="jbullet/lib/lwjgl/lwjgl.jar"/>
-	<classpathentry kind="var" path="jbullet/dist/jbullet.jar" sourcepath="/jbullet"/>
-	<classpathentry kind="var" path="jbullet/dist/jbullet-demos.jar" sourcepath="/jbullet"/>
+	<classpathentry kind="var" path="jbullet/dist/jbullet.jar"/>
+	<classpathentry kind="var" path="jbullet/dist/jbullet-demos.jar"/>
 	<classpathentry kind="var" path="ecj"/>
 	<classpathentry kind="var" path="jbullet/lib/vecmath/vecmath.jar"/>
 	<classpathentry kind="var" path="ecj/libraries/itext-1.2.jar"/>
 	<classpathentry kind="var" path="ecj/libraries/jcommon-1.0.0.jar"/>
 	<classpathentry kind="var" path="ecj/libraries/jfreechart-1.0.1.jar"/>
 	<classpathentry kind="var" path="ecj/libraries/jzlib-1.0.7.jar"/>
-	<classpathentry kind="var" path="jbullet"/>
+	<classpathentry kind="lib" path="lib/guava-14.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
