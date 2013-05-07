@@ -26,7 +26,7 @@ import org.lwjgl.opengl.Display;
  * @version 1.0 
  */
 
-public class PhysicsStatistics extends KozaStatistics {
+public class PhysicsStatistics extends KozaShortStatistics {
 
     @Override
     public void postEvaluationStatistics(final EvolutionState state) {

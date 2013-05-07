@@ -125,7 +125,7 @@ public class PhysicsModel extends DemoApplication {
 
         inputs = new AveragedInput[30];
         for(int i = 0;i < 30;i++)
-            inputs[i] = new AveragedInput(5,-5,5);
+            inputs[i] = new AveragedInput(1,-1,1);
 
         // Setup the basic world
         DefaultCollisionConfiguration collision_config = new DefaultCollisionConfiguration();

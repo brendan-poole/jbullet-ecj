@@ -2,7 +2,7 @@
 # Licensed under the Academic Free License version 3.0
 # See the file "LICENSE" for more information
 
-parent.0 = ../../gp/koza/koza.params
+parent.0 = @ec.gp.koza.KozaBuilder koza.params
 
 generations = 1000
 
@@ -297,7 +297,7 @@ gp.fs.size = 1
 
 gp.fs.0.name = f0
 gp.fs.0.info = ec.gp.GPFuncInfo
-gp.fs.0.size = 12
+gp.fs.0.size = 14
 gp.fs.0 = ec.gp.GPFunctionSet
 gp.fs.0.func.0 = ec.app.physics.func.Sin
 gp.fs.0.func.0.nc = nc1
@@ -323,6 +323,10 @@ gp.fs.0.func.10 = ec.app.physics.func.IfGT
 gp.fs.0.func.10.nc = nc3
 gp.fs.0.func.11 = ec.app.physics.func.X
 gp.fs.0.func.11.nc = nc0
+gp.fs.0.func.12 = ec.app.physics.func.Zero
+gp.fs.0.func.12.nc = nc0
+gp.fs.0.func.13 = ec.app.physics.func.RagdollCentreOfMassPointERC
+gp.fs.0.func.13.nc = nc0
 
 #
 # We specify our problem here
@@ -422,13 +426,13 @@ pop.subpops.0.portrayal=ec.display.portrayal.PhysicsPortrayal
 stat = ec.app.physics.PhysicsStatistics
 
 # one thread
-evalthreads = 				4
-breedthreads = 				4
+evalthreads = 				1
+breedthreads = 				1
 
-seed.0 = 				435
-seed.1 = 				43
-seed.2 = 				4
-seed.3 = 				1
+seed.0 = 				1
+seed.1 = 				49
+seed.2 = 				9
+seed.3 = 				7
 
 
 

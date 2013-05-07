@@ -16,18 +16,20 @@ import com.bulletphysics.demos.opengl.LWJGL;
 
 import ec.EvolutionState;
 import ec.Individual;
-import ec.app.physics.PhysicsModel;
-import ec.app.physics.PhysicsProblem;
-import ec.app.physics.PhysicsStatistics;
+import ec.app.knock.MaxOnes;
+import ec.app.knock.PhysicsModel;
+import ec.simple.SimpleStatistics;
 import ec.util.Log;
 import ec.util.LogRestarter;
 import ec.util.Output;
 import ec.util.Parameter;
+import ec.vector.FloatVectorIndividual;
+import ec.vector.GeneVectorIndividual;
 
-public class PhysicsPortrayal extends IndividualPortrayal implements KeyListener {
+public class MaxOnesPortrayal extends IndividualPortrayal implements KeyListener {
 
     EvolutionState currentState;
-    Individual currentIndividual;
+    FloatVectorIndividual currentIndividual;
     private static final LogRestarter restarter = new LogRestarter() {
 
         public Log reopen(Log l)
@@ -46,7 +48,7 @@ public class PhysicsPortrayal extends IndividualPortrayal implements KeyListener
     private CharArrayWriter printIndividualWriter;
     private CharArrayWriter printBestIndividualWriter;
 
-    public PhysicsPortrayal() {
+    public MaxOnesPortrayal() {
         super(new BorderLayout());
         textPane = new JTextPane();
         textPane.setEditable(false);
@@ -63,20 +65,21 @@ public class PhysicsPortrayal extends IndividualPortrayal implements KeyListener
     }
 
     public void portrayIndividual(EvolutionState state, Individual individual) {
-        this.currentIndividual = individual;
+        this.currentIndividual = (FloatVectorIndividual) individual;
         this.currentState = state;
         
         int printIndividualLog = state.output.addLog(printIndividualWriter, restarter, 0, false, false);
         individual.printIndividualForHumans(state, printIndividualLog, Output.V_NO_GENERAL);
-        textPane.setText(printIndividualWriter.toString());
+        textPane.setText("show selected");
         textPane.setCaretPosition(0);
         state.output.removeLog(printIndividualLog);
         printIndividualWriter.reset();
-        if(((PhysicsStatistics) this.currentState.statistics).bestSoFar[0] != null) {
+        
+        if(((SimpleStatistics)this.currentState.statistics).best_of_run[0] != null) {
         printIndividualLog = state.output.addLog(printIndividualWriter, restarter, 0, false, false);
-        ((PhysicsStatistics) this.currentState.statistics).bestSoFar[0]
+        ((SimpleStatistics) this.currentState.statistics).best_of_run[0]
         .printIndividualForHumans(state, printIndividualLog, Output.V_NO_GENERAL);
-        textBestPane.setText(printIndividualWriter.toString());
+        textBestPane.setText("show best");
         textBestPane.setCaretPosition(0);
         state.output.removeLog(printIndividualLog);
         printBestIndividualWriter.reset();
@@ -90,33 +93,25 @@ public class PhysicsPortrayal extends IndividualPortrayal implements KeyListener
 
     public void keyTyped(KeyEvent ke) {
         if (ke.getSource() == this.textBestPane) {
-            this.currentIndividual = ((PhysicsStatistics) this.currentState.statistics).bestSoFar[0];
+            this.currentIndividual = (FloatVectorIndividual) ((SimpleStatistics) this.currentState.statistics).best_of_run[0];
         }
 
-        PhysicsProblem.paused = true;
-        PhysicsProblem p = (PhysicsProblem) currentState.evaluator.p_problem.clone();
+        MaxOnes.paused = true;
+        MaxOnes p = (MaxOnes) currentState.evaluator.p_problem.clone();
         p.model = new PhysicsModel(LWJGL.getGL(), true);
         int frame = 0;
         double sum = 0.0;
-        while (frame < 10000 && !Display.isCloseRequested()) {
+        while (frame < p.frames && !Display.isCloseRequested()) {
             p.runFrame(currentState, currentIndividual, 0, 0, frame, p.model);
             Vector3f v = new Vector3f();
-            p.model.ragdolls.get(0).bodies[2].getCenterOfMassPosition(v);
-            sum += v.y / 2000f;
-
             frame++;
-            if(frame==2000) {
-                v = new Vector3f();
-                p.model.ragdolls.get(0).bodies[2].getCenterOfMassPosition(v);
-                System.out.println("Fitness: "+Math.abs(1100 - (Math.abs(v.x) + Math.abs(v.y)))+" evaludated:"+this.currentIndividual.evaluated);
-            }
         }
         p.model.getDynamicsWorld().destroy();
         p.model.setDynamicsWorld(null);
         Display.destroy();
         p = null;
 
-        PhysicsProblem.paused = false;
+        MaxOnes.paused = false;
     }
 
     public void keyPressed(KeyEvent ke) {

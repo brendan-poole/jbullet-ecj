@@ -24,7 +24,7 @@
  * Written by: Marten Svanfeldt
  */
 
-package ec.app.physics;
+package ec.app.knock;
 
 import com.bulletphysics.BulletGlobals;
 import com.bulletphysics.collision.shapes.CapsuleShape;
@@ -527,6 +527,7 @@ public RotationalLimitMotor[] motors;
 	}
 	
 	private RigidBody localCreateRigidBody(float mass, Transform startTransform, CollisionShape shape) {
+		mass = mass /10f;
 		boolean isDynamic = (mass != 0f);
 
 		Vector3f localInertia = new Vector3f();
