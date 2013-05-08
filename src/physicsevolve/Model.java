@@ -25,7 +25,7 @@ import ec.util.Parameter;
 
 public class Model implements Setup, Cloneable {
 
-	public BiMap<String, RigidBody> bodies = HashBiMap.create();
+	public BiMap<Integer, RigidBody> bodies = HashBiMap.create();
 	public DynamicsWorld dynamicsWorld;
 
 	@Override
@@ -43,14 +43,14 @@ public class Model implements Setup, Cloneable {
         Transform tr = new Transform();
         tr.setIdentity();
         tr.origin.set(0f, -15f, 0f);
-        createRigidBody("ground", 0f, tr, cs);
+        createRigidBody(-1, 0f, tr, cs);
 
 	}
 
 	public void move() {
 		dynamicsWorld.stepSimulation(1/30f,1);
 	}
-	protected RigidBody createRigidBody(String name, float mass, Transform startTransform, CollisionShape shape) {
+	protected RigidBody createRigidBody(int name, float mass, Transform startTransform, CollisionShape shape) {
 		
 		// rigidbody is dynamic if and only if mass is non zero, otherwise static
 		boolean isDynamic = (mass != 0f);
@@ -64,5 +64,17 @@ public class Model implements Setup, Cloneable {
 		dynamicsWorld.addRigidBody(body);
 		bodies.put(name, body);
 		return body;
+	}
+	
+	public void reset() {
+		dynamicsWorld.getConstraintSolver().reset();
+		for(Integer n : bodies.keySet()) {
+			RigidBody b = bodies.get(n);
+			dynamicsWorld.removeRigidBody(b);
+		}
+		this.init();
+	}
+
+	public void init() {
 	}
 }

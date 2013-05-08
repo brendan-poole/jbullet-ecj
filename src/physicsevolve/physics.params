@@ -1,2 +1,69 @@
-physics.model=physicsevolve.DefaultModel
-physics.view=physicsevolve.NullWorldView
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+# The parameters that were laid out in Tutorial 1 (see the documentation)
+
+verbosity	= 0
+
+breedthreads	= 8
+evalthreads	= 8
+seed.0		= 1
+seed.1		= 2
+seed.2		= 3
+seed.3		= 4
+seed.4		= 5
+seed.5		= 6
+seed.6		= 7
+seed.7		= 8
+
+state		= ec.simple.SimpleEvolutionState
+
+pop		= ec.Population
+init		= ec.simple.SimpleInitializer
+finish		= ec.simple.SimpleFinisher
+breed		= ec.simple.SimpleBreeder
+eval		= ec.simple.SimpleEvaluator
+stat		= ec.simple.SimpleStatistics
+exch		= ec.simple.SimpleExchanger
+
+generations		= 20000
+quit-on-run-complete	= true
+checkpoint		= false
+prefix			= ec
+checkpoint-modulo	= 1
+
+stat.file		= $out.stat
+
+pop.subpops		= 1
+pop.subpop.0		= ec.Subpopulation
+
+pop.subpop.0.size 		= 200
+pop.subpop.0.duplicate-retries 	= 0
+pop.subpop.0.species 		= ec.vector.FloatVectorSpecies
+
+pop.subpop.0.species.fitness 	= ec.simple.SimpleFitness
+pop.subpop.0.species.ind	= ec.vector.DoubleVectorIndividual
+
+pop.subpop.0.species.genome-size	= 30
+pop.subpop.0.species.min-gene = -50.0
+pop.subpop.0.species.max-gene = 50.0
+pop.subpop.0.species.crossover-type	= two
+#pop.subpop.0.species.crossover-prob	= 0.1
+pop.subpop.0.species.mutation-prob	= 0.01
+
+pop.subpop.0.species.mutation-type	= reset
+
+pop.subpop.0.species.pipe			= ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.source.0		= ec.vector.breed.VectorCrossoverPipeline
+
+pop.subpop.0.species.pipe.source.0.source.0 = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1	= ec.select.TournamentSelection
+
+pop.subpops.0.portrayal=ec.display.portrayal.MaxOnesPortrayal
+
+select.tournament.size		= 2
+
+eval.problem		= physicsevolve.MaxOnes
+eval.problem.model  = physicsevolve.DefaultModel
+eval.problem.view  =  physicsevolve.NullWorldView

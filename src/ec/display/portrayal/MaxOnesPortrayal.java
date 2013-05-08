@@ -12,11 +12,12 @@ import javax.vecmath.Vector3f;
 
 import org.lwjgl.opengl.Display;
 
+import physicsevolve.MaxOnes;
+
 import com.bulletphysics.demos.opengl.LWJGL;
 
 import ec.EvolutionState;
 import ec.Individual;
-import ec.app.knock.MaxOnes;
 import ec.app.knock.PhysicsModel;
 import ec.simple.SimpleStatistics;
 import ec.util.Log;
@@ -98,16 +99,16 @@ public class MaxOnesPortrayal extends IndividualPortrayal implements KeyListener
 
         MaxOnes.paused = true;
         MaxOnes p = (MaxOnes) currentState.evaluator.p_problem.clone();
-        p.model = new PhysicsModel(LWJGL.getGL(), true);
+       // p.model = new PhysicsModel(LWJGL.getGL(), true);
         int frame = 0;
         double sum = 0.0;
         while (frame < p.frames && !Display.isCloseRequested()) {
-            p.runFrame(currentState, currentIndividual, 0, 0, frame, p.model);
+            //p.runFrame(currentState, currentIndividual, 0, 0, frame, p.model);
             Vector3f v = new Vector3f();
             frame++;
         }
-        p.model.getDynamicsWorld().destroy();
-        p.model.setDynamicsWorld(null);
+       // p.model.getDynamicsWorld().destroy();
+        //p.model.setDynamicsWorld(null);
         Display.destroy();
         p = null;
 

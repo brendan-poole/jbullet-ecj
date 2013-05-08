@@ -27,7 +27,7 @@ public class PhysicsConsole extends Console {
 
 		application
 				.loadParameters(new File(
-						"src/ec/app/knock/knock.params"));
+						"src/physicsevolve/physics.params"));
 		application.playButton.setEnabled(true);
 		application.stepButton.setEnabled(true);
 		application.conPanel.enableControls();

@@ -60,4 +60,4 @@ pop.subpops.0.portrayal=ec.display.portrayal.MaxOnesPortrayal
 
 select.tournament.size		= 2
 
-eval.problem		= ec.app.knock.MaxOnes
+eval.problem		= physicsevolve.MaxOnes

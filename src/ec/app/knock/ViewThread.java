@@ -7,6 +7,8 @@ package ec.app.knock;
 
 import org.lwjgl.opengl.Display;
 
+import physicsevolve.MaxOnes;
+
 import com.bulletphysics.demos.opengl.LWJGL;
 
 import ec.EvolutionState;
@@ -32,14 +34,14 @@ public class ViewThread extends Thread {
     public void run() {
         super.run();
         MaxOnes p = (MaxOnes) state.evaluator.p_problem.clone();
-        p.model = new PhysicsModel(LWJGL.getGL(), true);
+        //p.model = new Model(LWJGL.getGL(), true);
         int frame = 0;
         while (frame < 10000 && !Display.isCloseRequested()) {
-            p.runFrame(state, individual, 0, 0, frame,p.model);
+            //p.runFrame(state, individual, 0, 0, frame,p.model);
            frame++;
         }
-            p.model.getDynamicsWorld().destroy();
-            p.model.setDynamicsWorld(null);
+        //    p.model.getDynamicsWorld().destroy();
+        //    p.model.setDynamicsWorld(null);
            Display.destroy();
            p = null;
 
