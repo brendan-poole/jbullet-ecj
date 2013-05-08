@@ -17,14 +17,15 @@ public class Controller {
 		Vector3f v1 = new Vector3f();
 		Vector3f v2 = new Vector3f();
         while (frame < 1000  /* && !view.isCloseRequested() */) {
-    		//while(clock.getTimeMicroseconds()<1000000f/60f) {  }
 			model1.bodies.get("box").getCenterOfMassPosition(v1);
 			model2.bodies.get("box").getCenterOfMassPosition(v2);
-			System.out.println(v1.y +" "+v2.y);
+			System.out.print(v1.y);
             model1.move();
             model2.move();
             //view.render();
             frame++;
+    		while(clock.getTimeMicroseconds()<1000000f/60f) {  }
+        	//clock.reset();
         }
         model1.dynamicsWorld.destroy();
         model1.dynamicsWorld = null;

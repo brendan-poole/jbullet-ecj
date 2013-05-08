@@ -43,7 +43,7 @@ public class Model {
         cs = new BoxShape(new Vector3f(1f, 1f, 1f));
         tr = new Transform();
         tr.setIdentity();
-        tr.origin.set(0f, 15f, 0f);
+        tr.origin.set(0f, 200f, 0f);
         createRigidBody("box", 1f, tr, cs);
 	}
 
@@ -52,6 +52,7 @@ public class Model {
 	}
 
 	public RigidBody createRigidBody(String name, float mass, Transform startTransform, CollisionShape shape) {
+		
 		// rigidbody is dynamic if and only if mass is non zero, otherwise static
 		boolean isDynamic = (mass != 0f);
 		Vector3f localInertia = new Vector3f(0f, 0f, 0f);

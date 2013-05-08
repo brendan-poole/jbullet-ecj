@@ -1,0 +1,3 @@
+to plot results:
+
+	C:\Users\tp23836\dev\jbullet-ecj>run physicsevolve.Controller > t & gnuplot -p -e "plot 't'"
