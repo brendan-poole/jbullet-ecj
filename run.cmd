@@ -20,7 +20,7 @@ set classpath=%classpath%;%bin%
 
 rem echo %classpath%
 
-java -ea -Djava.library.path=C:/Users/tp23836/dev/jbullet-20101010/lib/lwjgl/win32 %1
+java -ea -Djava.library.path=C:/Users/tp23836/dev/jbullet-20101010/lib/lwjgl/win32 %1 %2 %3 %4 %5
 
 
 

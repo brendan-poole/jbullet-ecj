@@ -19,12 +19,17 @@ import com.bulletphysics.linearmath.Transform;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-public class Model {
-	
-	public BiMap<String, RigidBody> bodies = HashBiMap.create();
-	public DynamicsWorld dynamicsWorld = null;
+import ec.EvolutionState;
+import ec.Setup;
+import ec.util.Parameter;
 
-	public Model() {
+public class Model implements Setup, Cloneable {
+
+	public BiMap<String, RigidBody> bodies = HashBiMap.create();
+	public DynamicsWorld dynamicsWorld;
+
+	@Override
+	public void setup(EvolutionState state, Parameter base) {
         DefaultCollisionConfiguration collision_config = new DefaultCollisionConfiguration();
         CollisionDispatcher dispatcher = new CollisionDispatcher(collision_config);
         Vector3f worldAabbMin = new Vector3f(-10000, -10000, -10000);
@@ -39,19 +44,13 @@ public class Model {
         tr.setIdentity();
         tr.origin.set(0f, -15f, 0f);
         createRigidBody("ground", 0f, tr, cs);
-        
-        cs = new BoxShape(new Vector3f(1f, 1f, 1f));
-        tr = new Transform();
-        tr.setIdentity();
-        tr.origin.set(0f, 200f, 0f);
-        createRigidBody("box", 1f, tr, cs);
+
 	}
 
 	public void move() {
 		dynamicsWorld.stepSimulation(1/30f,1);
 	}
-
-	public RigidBody createRigidBody(String name, float mass, Transform startTransform, CollisionShape shape) {
+	protected RigidBody createRigidBody(String name, float mass, Transform startTransform, CollisionShape shape) {
 		
 		// rigidbody is dynamic if and only if mass is non zero, otherwise static
 		boolean isDynamic = (mass != 0f);
@@ -66,6 +65,4 @@ public class Model {
 		bodies.put(name, body);
 		return body;
 	}
-
-
 }

@@ -1,0 +1,2 @@
+physics.model=physicsevolve.DefaultModel
+physics.view=physicsevolve.NullWorldView

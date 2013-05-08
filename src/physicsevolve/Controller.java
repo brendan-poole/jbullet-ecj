@@ -1,37 +1,46 @@
 package physicsevolve;
 
-import javax.vecmath.Vector3f;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import com.bulletphysics.linearmath.Clock;
+import com.bulletphysics.linearmath.Transform;
+
+import ec.EvolutionState;
+import ec.util.Parameter;
+import ec.util.ParameterDatabase;
 
 public class Controller {
 
 	static Clock clock = new Clock();
 
-	public static void main(String[] args) {
-		Model model1 = new Model();
-		Model model2 = new Model();
-		View view = new View(model1);
+	public static void main(String[] args) throws FileNotFoundException, IOException {
+		File paramFile = new File(args[0]);
+		EvolutionState es = new EvolutionState();
+		es.parameters = new ParameterDatabase(paramFile,new String[] {});
+		Parameter base = new Parameter("physics");
+		Model model1 = (Model) es.parameters.getInstanceForParameterEq(
+				base.push("model"), null, Model.class);
+		Model model2 = (Model) es.parameters.getInstanceForParameterEq(
+				base.push("model"), null, Model.class);
+		WorldView view = (WorldView) es.parameters.getInstanceForParameterEq(
+				base.push("view"), null, WorldView.class);
+
+		model1.setup(es, base);
+		model2.setup(es, base);
+		
+		view.model = model1;
+		view.setup(es, base);
 		
         int frame = 0;
-		Vector3f v1 = new Vector3f();
-		Vector3f v2 = new Vector3f();
-<<<<<<< HEAD
-        while (frame < 1000  /* && !view.isCloseRequested() */) {
-=======
         while (frame < 1000  && !view.isCloseRequested()) {
-    		while(clock.getTimeMicroseconds()<1000000f/60f) {  }
-    		clock.reset();
->>>>>>> f7a95325616c21f90309eccf0946b26f05f77552
-			model1.bodies.get("box").getCenterOfMassPosition(v1);
-			model2.bodies.get("box").getCenterOfMassPosition(v2);
-			System.out.print(v1.y);
+            view.render();
             model1.move();
             model2.move();
-            view.render();
             frame++;
     		while(clock.getTimeMicroseconds()<1000000f/60f) {  }
-        	//clock.reset();
+    		clock.reset();
         }
         model1.dynamicsWorld.destroy();
         model1.dynamicsWorld = null;
