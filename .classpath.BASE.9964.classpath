@@ -9,19 +9,10 @@
 	<classpathentry kind="var" path="jbullet/dist/jbullet-demos.jar"/>
 	<classpathentry kind="var" path="ecj"/>
 	<classpathentry kind="var" path="jbullet/lib/vecmath/vecmath.jar"/>
-<<<<<<< HEAD
-	<classpathentry kind="var" path="lib"/>
-	<classpathentry kind="var" path="lib/guava-14.0.1.jar"/>
-	<classpathentry kind="var" path="lib/itext-1.2.jar"/>
-	<classpathentry kind="var" path="lib/jcommon-1.0.0.jar"/>
-	<classpathentry kind="var" path="lib/jfreechart-1.0.1.jar"/>
-	<classpathentry kind="var" path="lib/jzlib-1.0.7.jar"/>
-=======
 	<classpathentry kind="var" path="ecj/libraries/itext-1.2.jar"/>
 	<classpathentry kind="var" path="ecj/libraries/jcommon-1.0.0.jar"/>
 	<classpathentry kind="var" path="ecj/libraries/jfreechart-1.0.1.jar"/>
 	<classpathentry kind="var" path="ecj/libraries/jzlib-1.0.7.jar"/>
-	<classpathentry kind="var" path="lib/guava-14.0.1.jar"/>
->>>>>>> f7a95325616c21f90309eccf0946b26f05f77552
+	<classpathentry kind="lib" path="lib/guava-14.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

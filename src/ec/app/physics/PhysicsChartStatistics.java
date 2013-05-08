@@ -42,7 +42,7 @@ public class PhysicsChartStatistics extends XYSeriesChartStatistics {
 				Vector3f v = new Vector3f();
 				p.model.ragdolls.get(0).bodies[BodyPart.BODYPART_HEAD.ordinal()]
 						.getCenterOfMassPosition(v);
-				addDataPoint(seriesID[0], v.x, v.y);
+				addDataPoint(seriesID[0], frame, v.y);
 				frame++;
 			}
 			p = null;

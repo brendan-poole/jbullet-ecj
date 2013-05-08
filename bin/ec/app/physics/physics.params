@@ -2,7 +2,7 @@
 # Licensed under the Academic Free License version 3.0
 # See the file "LICENSE" for more information
 
-parent.0 = @ec.gp.koza.KozaFitness koza.params
+parent.0 = @ec.gp.koza.KozaBuilder koza.params
 
 generations = 1000
 
@@ -341,7 +341,7 @@ eval.problem.stack.context.data = ec.app.physics.PhysicsData
 # The size of our training set, by default, is 20
 eval.problem.size = 20
 
-pop.subpop.0.size =			1024
+pop.subpop.0.size =			100
 
 # one tree for each joint
 pop.subpop.0.species.ind.numtrees = 30
@@ -426,12 +426,13 @@ pop.subpops.0.portrayal=ec.display.portrayal.PhysicsPortrayal
 stat = ec.app.physics.PhysicsStatistics
 
 # one thread
-evalthreads = 				2
-breedthreads = 				2
+evalthreads = 				1
+breedthreads = 				1
 
-seed.0 = 				43
+seed.0 = 				1
 seed.1 = 				49
-
+seed.2 = 				9
+seed.3 = 				7
 
 
 
