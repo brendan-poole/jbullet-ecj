@@ -9,3 +9,4 @@ out.stat
 **.gz
 bin/ec/app/physics/physics.params
 out.txt
+out.stat
