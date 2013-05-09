@@ -97,7 +97,7 @@ public class MaxOnesPortrayal extends IndividualPortrayal implements KeyListener
             this.currentIndividual = (FloatVectorIndividual) ((SimpleStatistics) this.currentState.statistics).best_of_run[0];
         }
 
-        MaxOnes.paused = true;
+       // MaxOnes.paused = true;
         MaxOnes p = (MaxOnes) currentState.evaluator.p_problem.clone();
        // p.model = new PhysicsModel(LWJGL.getGL(), true);
         int frame = 0;
@@ -112,7 +112,7 @@ public class MaxOnesPortrayal extends IndividualPortrayal implements KeyListener
         Display.destroy();
         p = null;
 
-        MaxOnes.paused = false;
+        //MaxOnes.paused = false;
     }
 
     public void keyPressed(KeyEvent ke) {

@@ -11,53 +11,43 @@ import ec.simple.SimpleFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import ec.vector.DoubleVectorIndividual;
-import ec.vector.FloatVectorIndividual;
 
 public class MaxOnes extends Problem implements SimpleProblemForm {
 	public final static int frames = 500;
-	public static boolean paused;
-    public Individual monitorInd;
     public Parameter base;
-    public transient Model[] models;
+    public transient Model model;
     
     @Override
     public void setup(EvolutionState state, Parameter base) {
     	this.base = base;
     }
     
-    @Override
-    public void prepareToEvaluate(EvolutionState state, int threadNum) {
-    	models = new Model[state.evalthreads];
-		models[threadNum] = (Model) state.parameters.getInstanceForParameterEq(
+	@Override
+	public void prepareToEvaluate(EvolutionState state, int threadNum) {
+		model = (Model) state.parameters.getInstanceForParameterEq(
 				base.push("model"), null, Model.class);
-		models[threadNum].setup(state, base);
+		model.setup(state, base);
+	}
+
+    public Object clone()
+    {
+    	MaxOnes myobj = (MaxOnes) (super.clone());
+    	return myobj;
     }
     
-
 	public void evaluate(final EvolutionState state, final Individual ind,
 			final int subpopulation, final int threadnum) {
 		if (ind.evaluated)
 			return;
-		models[threadnum].reset();
-		if(monitorInd == null) {
-            this.monitorInd = ind;
-        }
+		model.reset();
         DoubleVectorIndividual ind2 = (DoubleVectorIndividual) ind;
 
 		float sum = 0;
 		int frame = 0;
 		long t = System.currentTimeMillis();
 		while (frame < frames) {
-			while (paused) {
-				try {
-					Thread.currentThread().sleep(1000);
-				} catch (InterruptedException ex) {
-					ex.printStackTrace();
-				}
-			}
-
 			try {
-				runFrame(state, ind2, subpopulation, threadnum, frame, models[threadnum]);
+				runFrame(state, ind2, subpopulation, threadnum, frame, model);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 				sum = 0;
@@ -67,13 +57,14 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 		}
 		Transform tr = new Transform();
 		for(int i = 0; i < 10; i++) {
-			models[threadnum].bodies.get(i).getWorldTransform(tr);
-			sum -= Math.abs(0 - tr.origin.z) + Math.abs((i - 5) * 2 - tr.origin.x);
+			model.bodies.get(i).getWorldTransform(tr);
+			sum -= Math.abs(0 - tr.origin.z) + Math.abs(0 - tr.origin.x);
 		}
 
 		((SimpleFitness) ind2.fitness).setFitness(state, sum ,false);
 		ind2.evaluated = true;
 	}
+	
     public void runFrame(final EvolutionState state,
             final DoubleVectorIndividual ind,
             final int subpopulation,
@@ -90,4 +81,29 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
     	}
         model.move();
     }
+    
+	public void describe(final EvolutionState state, final Individual ind, final int subpopulation,
+			final int threadnum, final int log) {
+		int frame = 0;
+		prepareToEvaluate(state, threadnum);
+		while (frame < frames) {
+			try {
+				runFrame(state, (DoubleVectorIndividual) ind, subpopulation, threadnum, frame,
+						model);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				break;
+			}
+			frame++;
+		}
+		Transform tr = new Transform();
+		float maxy = Float.NEGATIVE_INFINITY;
+		for (int i = 0; i < 10; i++) {
+			model.bodies.get(i).getWorldTransform(tr);
+			if(tr.origin.y > maxy) {
+				maxy = tr.origin.y;
+			}
+		}
+		state.output.println(" Max Y: "+maxy,log);
+	}
 }

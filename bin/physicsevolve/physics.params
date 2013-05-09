@@ -6,8 +6,8 @@
 
 verbosity	= 0
 
-breedthreads	= 8
-evalthreads	= 8
+breedthreads	= 4
+evalthreads	= 4
 seed.0		= 1
 seed.1		= 2
 seed.2		= 3
@@ -25,13 +25,14 @@ finish		= ec.simple.SimpleFinisher
 breed		= ec.simple.SimpleBreeder
 eval		= ec.simple.SimpleEvaluator
 stat		= ec.simple.SimpleStatistics
+stat.do-per-generation-description=true
 exch		= ec.simple.SimpleExchanger
 
 generations		= 20000
 quit-on-run-complete	= true
 checkpoint		= true
-prefix			= ec
-checkpoint-modulo	= 1
+checkpoint-prefix	= ec
+checkpoint-modulo	= 100
 
 stat.file		= $out.stat
 
