@@ -10,3 +10,5 @@ out.stat
 bin/ec/app/physics/physics.params
 out.txt
 out.stat
+out.stat
+bin/*

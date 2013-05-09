@@ -30,8 +30,8 @@ exch		= ec.simple.SimpleExchanger
 generations		= 20000
 quit-on-run-complete	= true
 checkpoint		= true
-prefix			= ec
-checkpoint-modulo	= 1
+checkpoint-prefix	= ec
+checkpoint-modulo	= 100
 
 stat.file		= $out.stat
 
