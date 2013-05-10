@@ -10,7 +10,8 @@ import ec.EvolutionState;
 import ec.util.Parameter;
 
 public class DefaultModel extends Model {
-	
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void reset(boolean resetSeed) {
 		super.reset(resetSeed);
@@ -18,7 +19,7 @@ public class DefaultModel extends Model {
 			BoxShape bs = new BoxShape(new Vector3f(1f, 1f, 1f));
 			Transform tr = new Transform();
 			tr.setIdentity();
-			tr.origin.set(0, -2.5f, 50 - i * 5);
+			tr.origin.set((float)Math.cos(Math.PI * 2 / 10 * i) * 5, -2f, (float)Math.sin(Math.PI * 2 / 10 * i) * 5);
 			createRigidBody(i, 1f, tr, bs);
 		}
 	}

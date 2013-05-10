@@ -30,11 +30,14 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
 import com.bulletphysics.BulletGlobals;
+import com.bulletphysics.BulletStats;
 import com.bulletphysics.collision.dispatch.CollisionObject;
 import com.bulletphysics.demos.opengl.GLShapeDrawer;
 import com.bulletphysics.demos.opengl.IGL;
 import com.bulletphysics.demos.opengl.LWJGL;
 import com.bulletphysics.dynamics.RigidBody;
+import com.bulletphysics.linearmath.CProfileIterator;
+import com.bulletphysics.linearmath.CProfileManager;
 import com.bulletphysics.linearmath.DefaultMotionState;
 import com.bulletphysics.linearmath.QuaternionUtil;
 import com.bulletphysics.linearmath.Transform;
@@ -58,9 +61,6 @@ public class DefaultWorldView extends WorldView {
 	private Vector3f wireColor = new Vector3f();
 	private final Transform tr = new Transform();
 
-	/* (non-Javadoc)
-	 * @see physicsevolve.WorldView#render()
-	 */
 	@Override
 	public void render() {
 		Display.update();
@@ -133,7 +133,7 @@ public class DefaultWorldView extends WorldView {
 		gl = LWJGL.getGL();
 		reshape(1024, 768);
 		setCameraDistance(10f);
-
+		
 		float[] light_ambient = new float[] { 0.2f, 0.2f, 0.2f, 1.0f };
 		float[] light_diffuse = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
 		float[] light_specular = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -221,9 +221,6 @@ public class DefaultWorldView extends WorldView {
 				cameraTargetPosition.z, cameraUp.x, cameraUp.y, cameraUp.z);
 	}
 
-	/* (non-Javadoc)
-	 * @see physicsevolve.WorldView#destroy()
-	 */
 	@Override
 	public void destroy() {
 		Display.destroy();

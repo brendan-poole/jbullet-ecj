@@ -39,12 +39,12 @@ public class Controller {
 		int frame = 0;
         String data1 = "";
         while (frame < 1000  && !view.isCloseRequested()) {
-            //view.render();
+            view.render();
             model1.move();
             model2.move();
             frame++;
-    		//while(clock.getTimeMicroseconds()<1000000f/60f) {  }
-    		//clock.reset();
+    		while(clock.getTimeMicroseconds()<1000000f/60f) {  }
+    		clock.reset();
             
     		Iterator it = model1.bodies.values().iterator();
 			Transform tr = new Transform();
@@ -63,7 +63,7 @@ public class Controller {
 		frame = 0;
         String data2 = "";
         while (frame < 1000  && !view.isCloseRequested()) {
-            //view.render();
+            view.render();
             model1.move();
             model2.move();
             frame++;

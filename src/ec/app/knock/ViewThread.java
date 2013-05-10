@@ -7,12 +7,9 @@ package ec.app.knock;
 
 import org.lwjgl.opengl.Display;
 
-import physicsevolve.MaxOnes;
-
-import com.bulletphysics.demos.opengl.LWJGL;
-
 import ec.EvolutionState;
 import ec.Individual;
+import ec.app.tutorial1.MaxOnes;
 import ec.vector.FloatVectorIndividual;
 
 /**
