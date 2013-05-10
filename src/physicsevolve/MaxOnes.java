@@ -2,6 +2,7 @@ package physicsevolve;
 
 import javax.vecmath.Vector3f;
 
+import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
 
 import ec.EvolutionState;
@@ -16,10 +17,14 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 	public final static int frames = 1000;
 	public Parameter base;
 	public transient Model model;
+	public static transient WorldView view;
 
 	@Override
 	public void setup(EvolutionState state, Parameter base) {
 		this.base = base;
+		view = (WorldView) state.parameters.getInstanceForParameterEq(base.push("view"), null,
+				WorldView.class);
+
 	}
 
 	public Object clone() {
@@ -48,7 +53,8 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 		int frame = 0;
 		while (frame < frames) {
 			try {
-				runFrame(state, ind2, subpopulation, threadnum, frame, model);
+				boolean noMovement = runFrame(state, ind2, subpopulation, threadnum, frame, model);
+				if(noMovement) break;
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 				break;
@@ -64,8 +70,9 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 		ind2.evaluated = true;
 	}
 
-	public void runFrame(final EvolutionState state, final DoubleVectorIndividual ind,
+	public boolean runFrame(final EvolutionState state, final DoubleVectorIndividual ind,
 			final int subpopulation, final int threadnum, int frame, Model model) {
+		boolean noMovement=true;
 		for (int i = 0; i < 10; i++) {
 			if (frame == i * 10) {
 				Vector3f v = new Vector3f();
@@ -75,25 +82,30 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 				v.z += ind.genome[i * 3 + 2];
 				model.bodies.get(i).setLinearVelocity(v);
 			}
+			if(model.bodies.get(i).getActivationState()==RigidBody.ACTIVE_TAG)
+				noMovement=false;
 		}
 		model.move();
+		return noMovement;
 	}
 
 	public void describe(final EvolutionState state, final Individual ind, final int subpopulation,
 			final int threadnum, final int log) {
-		int frame = 0;
 		initModel(state);
-		while (frame < frames) {
-			try {
-				runFrame(state, (DoubleVectorIndividual) ind, subpopulation, threadnum, frame,
-						model);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				break;
+		view.model = model;
+		Thread r = new Thread() {
+			@Override
+			public void run() {
+				int frame = 0;
+				while (frame < frames) {
+					runFrame(state, (DoubleVectorIndividual) ind, subpopulation, threadnum, frame,
+							model);
+					view.render();
+					frame++;
+				}
 			}
-			frame++;
-		}
-		state.output.println(" Max Y: " + calcMaxY(), log);
+		};
+		r.start();
 	}
 
 	public float calcMaxY() {
