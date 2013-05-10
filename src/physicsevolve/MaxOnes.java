@@ -13,7 +13,7 @@ import ec.util.Parameter;
 import ec.vector.DoubleVectorIndividual;
 
 public class MaxOnes extends Problem implements SimpleProblemForm {
-	public final static int frames = 500;
+	public final static int frames = 1000;
 	public Parameter base;
 	public transient Model model;
 
@@ -46,19 +46,20 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 
 		float sum = 0;
 		int frame = 0;
-		long t = System.currentTimeMillis();
 		while (frame < frames) {
 			try {
 				runFrame(state, ind2, subpopulation, threadnum, frame, model);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
-				sum = Float.NEGATIVE_INFINITY;
 				break;
 			}
 			frame++;
 		}
-		if (sum != Float.NEGATIVE_INFINITY)
-			sum = this.calcMaxY();
+		Transform tr = new Transform();
+		for (int i = 0; i < 10; i++) {
+			model.bodies.get(i).getWorldTransform(tr);
+			sum -= Math.abs(tr.origin.x) + Math.abs(tr.origin.z);
+		}
 		((SimpleFitness) ind2.fitness).setFitness(state, sum, false);
 		ind2.evaluated = true;
 	}
