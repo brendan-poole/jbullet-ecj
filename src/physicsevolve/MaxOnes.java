@@ -126,8 +126,10 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 			}
 		};
 		if (!viewInProgress) {
+			synchronized(this) {
 			viewInProgress = true;
 			r.start();
+			}
 
 		}
 
