@@ -8,14 +8,14 @@ verbosity	= 0
 
 breedthreads	= 8
 evalthreads	= 8
-seed.0		= 1
-seed.1		= 2
-seed.2		= 3
-seed.3		= 4
-seed.4		= 5
-seed.5		= 6
-seed.6		= 7
-seed.7		= 8
+seed.0		= 11
+seed.1		= 22
+seed.2		= 33
+seed.3		= 44
+seed.4		= 55
+seed.5		= 66
+seed.6		= 77
+seed.7		= 88
 
 state		= ec.simple.SimpleEvolutionState
 
@@ -36,32 +36,26 @@ checkpoint-modulo	= 100
 
 stat.file		= $out.stat
 
-pop.subpops		= 1
+pop.subpops		= 3
 pop.subpop.0		= ec.Subpopulation
-
-pop.subpop.0.size 		= 200
-pop.subpop.0.duplicate-retries 	= 0
-pop.subpop.0.species 		= ec.vector.FloatVectorSpecies
-
-pop.subpop.0.species.fitness 	= ec.simple.SimpleFitness
-pop.subpop.0.species.ind	= ec.vector.DoubleVectorIndividual
-
+pop.subpop.0.species = ec.vector.FloatVectorSpecies
+pop.subpop.0.species.fitness = ec.simple.SimpleFitness
+pop.subpop.0.species.ind = ec.vector.DoubleVectorIndividual
+pop.subpop.0.duplicate-retries = 0
+pop.subpop.0.species.pipe = ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.generate-max = false
+pop.subpop.0.species.pipe.num-sources = 2
+pop.subpop.0.species.pipe.source.0 = ec.vector.breed.VectorCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0 = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1	= ec.select.TournamentSelection
+pop.subpop.0.size 		= 100
 pop.subpop.0.species.genome-size	= 30
 pop.subpop.0.species.min-gene = -50.0
 pop.subpop.0.species.max-gene = 50.0
-pop.subpop.0.species.crossover-type	= two
-#pop.subpop.0.species.crossover-prob	= 0.1
+pop.subpop.0.species.crossover-type	= any
+pop.subpop.0.species.crossover-prob	= 0.5
 pop.subpop.0.species.mutation-prob	= 0.01
-
 pop.subpop.0.species.mutation-type	= reset
-
-pop.subpop.0.species.pipe			= ec.vector.breed.VectorMutationPipeline
-pop.subpop.0.species.pipe.source.0		= ec.vector.breed.VectorCrossoverPipeline
-
-pop.subpop.0.species.pipe.source.0.source.0 = ec.select.TournamentSelection
-pop.subpop.0.species.pipe.source.0.source.1	= ec.select.TournamentSelection
-
-pop.subpops.0.portrayal=ec.display.portrayal.MaxOnesPortrayal
 
 select.tournament.size		= 2
 

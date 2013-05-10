@@ -26,7 +26,6 @@ breed		= ec.simple.SimpleBreeder
 eval		= ec.simple.SimpleEvaluator
 stat		= ec.simple.SimpleStatistics
 stat.do-per-generation-description=true
-exch		= ec.simple.SimpleExchanger
 
 generations		= 20000
 quit-on-run-complete	= true
@@ -36,8 +35,9 @@ checkpoint-modulo	= 100
 
 stat.file		= $out.stat
 
-pop.subpops		= 3
+pop.subpops		= 5
 pop.subpop.0		= ec.Subpopulation
+pop.default-subpop=0
 pop.subpop.0.species = ec.vector.FloatVectorSpecies
 pop.subpop.0.species.fitness = ec.simple.SimpleFitness
 pop.subpop.0.species.ind = ec.vector.DoubleVectorIndividual
@@ -48,12 +48,12 @@ pop.subpop.0.species.pipe.num-sources = 2
 pop.subpop.0.species.pipe.source.0 = ec.vector.breed.VectorCrossoverPipeline
 pop.subpop.0.species.pipe.source.0.source.0 = ec.select.TournamentSelection
 pop.subpop.0.species.pipe.source.0.source.1	= ec.select.TournamentSelection
-pop.subpop.0.size 		= 100
+pop.subpop.0.size 		= 200
 pop.subpop.0.species.genome-size	= 30
 pop.subpop.0.species.min-gene = -50.0
 pop.subpop.0.species.max-gene = 50.0
-pop.subpop.0.species.crossover-type	= any
-pop.subpop.0.species.crossover-prob	= 0.5
+pop.subpop.0.species.crossover-type	= two
+#pop.subpop.0.species.crossover-prob	= 0.5
 pop.subpop.0.species.mutation-prob	= 0.01
 pop.subpop.0.species.mutation-type	= reset
 
@@ -62,3 +62,41 @@ select.tournament.size		= 2
 eval.problem		= physicsevolve.MaxOnes
 eval.problem.model  = physicsevolve.DefaultModel
 eval.problem.view  =  physicsevolve.NullWorldView
+
+exch = ec.exchange.InterPopulationExchange
+
+exch.subpop.0.select = ec.select.TournamentSelection
+exch.subpop.0.mod = 50
+exch.subpop.0.start = 50
+exch.subpop.0.size = 3
+exch.subpop.0.num-dest = 1
+exch.subpop.0.dest.0 = 1
+
+exch.subpop.1.select = ec.select.TournamentSelection
+exch.subpop.1.mod = 50
+exch.subpop.1.start = 50
+exch.subpop.1.size = 3
+exch.subpop.1.num-dest = 1
+exch.subpop.1.dest.0 = 2
+
+exch.subpop.2.select = ec.select.TournamentSelection
+exch.subpop.2.mod = 50
+exch.subpop.2.start = 50
+exch.subpop.2.size = 3
+exch.subpop.2.num-dest = 1
+exch.subpop.2.dest.0 = 3
+
+exch.subpop.3.select = ec.select.TournamentSelection
+exch.subpop.3.mod = 50
+exch.subpop.3.start = 50
+exch.subpop.3.size = 3
+exch.subpop.3.num-dest = 1
+exch.subpop.3.dest.0 = 4
+
+exch.subpop.4.select = ec.select.TournamentSelection
+exch.subpop.4.mod = 50
+exch.subpop.4.start = 50
+exch.subpop.4.size = 3
+exch.subpop.4.num-dest = 1
+exch.subpop.4.dest.0 = 0
+

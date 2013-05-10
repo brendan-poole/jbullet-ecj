@@ -91,11 +91,14 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 
 	public void describe(final EvolutionState state, final Individual ind, final int subpopulation,
 			final int threadnum, final int log) {
-		initModel(state);
-		view.model = model;
+		
 		Thread r = new Thread() {
 			@Override
 			public void run() {
+				Model model = (Model) state.parameters.getInstanceForParameterEq(base.push("model"), null,
+						Model.class);
+				model.setup(state, base);
+				view.model = model;
 				int frame = 0;
 				while (frame < frames) {
 					runFrame(state, (DoubleVectorIndividual) ind, subpopulation, threadnum, frame,
@@ -106,6 +109,7 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 			}
 		};
 		r.start();
+		
 	}
 
 	public float calcMaxY() {
