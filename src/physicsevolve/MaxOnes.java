@@ -65,7 +65,7 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 			frame++;
 		}
 		Transform tr = new Transform();
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 10; i++) {
 			model.bodies.get(i).getWorldTransform(tr);
 			sum -= Math.abs(tr.origin.x) + Math.abs(tr.origin.z);
 		}
@@ -78,7 +78,7 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 			final int threadnum, int frame, Model model) {
 		boolean noMovement = true;
 		for (int i = 0; i < 10; i++) {
-			if (frame == i * 10) {
+			if (frame == i * 30) {
 				Vector3f v = new Vector3f();
 				model.bodies.get(i).getLinearVelocity(v);
 				v.x += ind.genome[i * 3];
