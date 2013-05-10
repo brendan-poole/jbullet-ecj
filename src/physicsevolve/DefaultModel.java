@@ -12,9 +12,9 @@ import ec.util.Parameter;
 public class DefaultModel extends Model {
 	
 	@Override
-	public void reset() {
-		super.reset();
-        for (int i = 0; i < 10; i++) {
+	public void reset(boolean resetSeed) {
+		super.reset(resetSeed);
+        for (int i = 0; i < 100; i++) {
 			BoxShape bs = new BoxShape(new Vector3f(1f, 1f, 1f));
 			Transform tr = new Transform();
 			tr.setIdentity();

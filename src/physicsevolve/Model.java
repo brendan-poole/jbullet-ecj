@@ -37,7 +37,7 @@ public abstract class Model implements Setup, Cloneable {
 		collision_config = new DefaultCollisionConfiguration();
 		constraintSolver = new SequentialImpulseConstraintSolver();
 		dispatcher = new CollisionDispatcher(collision_config);
-		reset();
+		reset(false);
 	}
 
 	public void move() {
@@ -63,7 +63,7 @@ public abstract class Model implements Setup, Cloneable {
 		return body;
 	}
 
-	public void reset() {
+	public void reset(boolean resetSeed) {
 		bodies = HashBiMap.create();
 		
 		Vector3f worldAabbMin = new Vector3f(-10000, -10000, -10000);
@@ -76,7 +76,7 @@ public abstract class Model implements Setup, Cloneable {
 				constraintSolver, collision_config);
 		dynamicsWorld.setGravity(new Vector3f(0f, -30f, 0f));
 
-		constraintSolver.reset();
+		if(resetSeed) constraintSolver.reset();
 
 		CollisionShape cs = new BoxShape(new Vector3f(1000f, 10f, 1000f));
 		Transform tr = new Transform();

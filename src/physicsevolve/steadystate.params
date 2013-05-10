@@ -1,0 +1,10 @@
+parent.0 = physics.params
+breedthreads	= 1
+evalthreads	= 1
+state		= ec.steadystate.SteadyStateEvolutionState
+breed		= ec.steadystate.SteadyStateBreeder
+eval		= ec.steadystate.SteadyStateEvaluator
+steady.deselector.0 =			ec.select.TournamentSelection
+steady.deselector.0.size =		1
+steady.deselector.0.pick-worst =	true
+pop.subpop.0.duplicate-retries 	= 100

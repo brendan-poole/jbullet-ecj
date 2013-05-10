@@ -57,8 +57,8 @@ public class Controller {
     		data1 += "\n";
 
         }
-		model1.reset();
-		model2.reset();
+		model1.reset(true);
+		model2.reset(true);
 		
 		frame = 0;
         String data2 = "";
