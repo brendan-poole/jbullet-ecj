@@ -12,11 +12,11 @@ public class DefaultModel extends Model {
 	@Override
 	public void reset(boolean resetSeed) {
 		super.reset(resetSeed);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
 			BoxShape bs = new BoxShape(new Vector3f(1f, 1f, 1f));
 			Transform tr = new Transform();
 			tr.setIdentity();
-			tr.origin.set((float)Math.cos(Math.PI * 2 / 10 * i) * 5, -2f, (float)Math.sin(Math.PI * 2 / 10 * i) * 5);
+			tr.origin.set((float)Math.cos(Math.PI * 2 / 20 * i) * 10, 4f, (float)Math.sin(Math.PI * 2 / 20 * i) * 10);
 			RigidBody b = createRigidBody(i, 1f, tr, bs);
 			b.setSleepingThresholds(0, 0);
 			
