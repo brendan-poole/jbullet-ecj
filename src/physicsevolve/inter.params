@@ -6,8 +6,8 @@
 
 verbosity	= 0
 
-breedthreads	= 8
-evalthreads	= 8
+breedthreads	= 4
+evalthreads	= 4
 seed.0		= 11
 seed.1		= 22
 seed.2		= 33
