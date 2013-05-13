@@ -95,6 +95,7 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 		Thread r = new Thread() {
 			@Override
 			public void run() {
+				System.out.print(">>>");
 				Model model = (Model) state.parameters.getInstanceForParameterEq(base.push("model"), null,
 						Model.class);
 				model.setup(state, base);
@@ -106,6 +107,7 @@ public class MaxOnes extends Problem implements SimpleProblemForm {
 					view.render();
 					frame++;
 				}
+				System.out.print("<<<");
 			}
 		};
 		r.start();
