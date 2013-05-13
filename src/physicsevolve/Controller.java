@@ -5,7 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 
-import com.bulletphysics.collision.dispatch.CollisionObject;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Clock;
 import com.bulletphysics.linearmath.Transform;
@@ -35,16 +38,24 @@ public class Controller {
 
 		view.model = model1;
 		view.setup(state, base);
+		Camera camera = new Camera(0,0,0);
+		FppController fppController = new FppController(camera);
 
 		int frame = 0;
         String data1 = "";
-        while (frame < 1000  && !view.isCloseRequested()) {
-            //view.render();
+        while (view.isCloseRequested()) {
+            view.render();
+            
+            //look through the camera before you draw anything
+            fppController.moveCamera();
+            camera.lookThrough();
+            //you would draw your scene here.
+            
             model1.move();
             model2.move();
             frame++;
-    		//while(clock.getTimeMicroseconds()<1000000f/60f) {  }
-    		//clock.reset();
+    		while(clock.getTimeMicroseconds()<1000000f/60f) {  }
+    		clock.reset();
             
     		Iterator it = model1.bodies.values().iterator();
 			Transform tr = new Transform();
@@ -62,8 +73,8 @@ public class Controller {
 		
 		frame = 0;
         String data2 = "";
-        while (frame < 1000  && !view.isCloseRequested()) {
-            //view.render();
+        while (frame < 0  && !view.isCloseRequested()) {
+            view.render();
             model1.move();
             model2.move();
             frame++;

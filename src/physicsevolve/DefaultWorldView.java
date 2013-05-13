@@ -27,6 +27,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
 import com.bulletphysics.BulletGlobals;
@@ -45,22 +46,12 @@ import ec.app.physics.PhysicsProblem;
 import ec.util.Parameter;
 
 public class DefaultWorldView extends WorldView {
-	protected float cameraDistance = 15f;
 	protected IGL gl;
-	protected int glutScreenWidth = 0;
-	protected int glutScreenHeight = 0;
-	protected float ele = 20f;
-	protected float azi = 0f;
-	protected final Vector3f cameraPosition = new Vector3f(0f, 0f, 0f);
-	protected final Vector3f cameraTargetPosition = new Vector3f(0f, 0f, 0f);
-	protected final Vector3f cameraUp = new Vector3f(0f, 1f, 0f);
-	protected int forwardAxis = 2;
+	protected int glutScreenWidth;
+	protected int glutScreenHeight;
 	private Vector3f wireColor = new Vector3f();
 	private final Transform tr = new Transform();
 
-	/* (non-Javadoc)
-	 * @see physicsevolve.WorldView#render()
-	 */
 	@Override
 	public void render() {
 		Display.update();
@@ -112,15 +103,13 @@ public class DefaultWorldView extends WorldView {
 					wireColor, 0);
 		}
 
-		// gl.glDisable(GL_LIGHTING);
-		// gl.glColor3f(0f, 0f, 0f);
-		// gl.glEnable(GL_LIGHTING);
-		updateCamera();
+		// set the modelview matrix back to the identity
+		GL11.glLoadIdentity();
 	}
 
 	public void setup(EvolutionState evolutionState, Parameter base) {
 		try {
-			Display.setDisplayMode(new DisplayMode(1024, 768));
+			Display.setDisplayMode(new DisplayMode(800, 600));
 			Display.setTitle("Physics");
 			Display.create(new PixelFormat(0, 24, 0));
 			Keyboard.create();
@@ -131,8 +120,7 @@ public class DefaultWorldView extends WorldView {
 					null, ex);
 		}
 		gl = LWJGL.getGL();
-		reshape(1024, 768);
-		setCameraDistance(10f);
+		reshape(800, 600);
 
 		float[] light_ambient = new float[] { 0.2f, 0.2f, 0.2f, 1.0f };
 		float[] light_diffuse = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -167,44 +155,9 @@ public class DefaultWorldView extends WorldView {
 		glutScreenHeight = h;
 
 		gl.glViewport(0, 0, w, h);
-		updateCamera();
-	}
 
-	public void setCameraDistance(float dist) {
-		cameraDistance = dist;
-	}
-
-	public void updateCamera() {
 		gl.glMatrixMode(GL_PROJECTION);
 		gl.glLoadIdentity();
-		float rele = ele * 0.01745329251994329547f; // rads per deg
-		float razi = azi * 0.01745329251994329547f; // rads per deg
-
-		Quat4f rot = new Quat4f();
-		QuaternionUtil.setRotation(rot, cameraUp, razi);
-
-		Vector3f eyePos = new Vector3f();
-		eyePos.set(0f, 0f, 0f);
-		VectorUtil.setCoord(eyePos, forwardAxis, -cameraDistance);
-
-		Vector3f forward = new Vector3f();
-		forward.set(eyePos.x, eyePos.y, eyePos.z);
-		if (forward.lengthSquared() < BulletGlobals.FLT_EPSILON) {
-			forward.set(1f, 0f, 0f);
-		}
-		Vector3f right = new Vector3f();
-		right.cross(cameraUp, forward);
-		Quat4f roll = new Quat4f();
-		QuaternionUtil.setRotation(roll, right, -rele);
-
-		Matrix3f tmpMat1 = new Matrix3f();
-		Matrix3f tmpMat2 = new Matrix3f();
-		tmpMat1.set(rot);
-		tmpMat2.set(roll);
-		tmpMat1.mul(tmpMat2);
-		tmpMat1.transform(eyePos);
-
-		cameraPosition.set(eyePos);
 
 		if (glutScreenWidth > glutScreenHeight) {
 			float aspect = glutScreenWidth / (float) glutScreenHeight;
@@ -215,25 +168,17 @@ public class DefaultWorldView extends WorldView {
 		}
 
 		gl.glMatrixMode(GL_MODELVIEW);
-		gl.glLoadIdentity();
-		gl.gluLookAt(cameraPosition.x, cameraPosition.y, cameraPosition.z,
-				cameraTargetPosition.x, cameraTargetPosition.y,
-				cameraTargetPosition.z, cameraUp.x, cameraUp.y, cameraUp.z);
+		
 	}
 
-	/* (non-Javadoc)
-	 * @see physicsevolve.WorldView#destroy()
-	 */
 	@Override
 	public void destroy() {
 		Display.destroy();
 	}
 
-	/* (non-Javadoc)
-	 * @see physicsevolve.WorldView#isCloseRequested()
-	 */
 	@Override
 	public boolean isCloseRequested() {
-		return Display.isCloseRequested();
+		return !Display.isCloseRequested()
+				&& !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
 	}
 }
