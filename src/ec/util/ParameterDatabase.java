@@ -7,10 +7,29 @@
 
 package ec.util;
 
-import java.io.*;
-import java.util.*;
-import javax.swing.tree.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 
 /* 
 
@@ -399,54 +418,6 @@ public class ParameterDatabase extends Properties implements Serializable
     Class relativeClass;
     String relativePath;
 
-    private Parameter wcParam(Parameter parameter) {
-    	
-    	return wildcardParam(parameter.toString(), new String[] {});
-    }
-    
-    private Parameter wildcardParam(String parameter, String[] tails) 
-    	{
-    	String[] newTails;
-    	String p = parameter.toString();
-    	int start = 0;
-    	for(int i = p.length() - 1; i >= 0; i--) 
-    		{
-    		if(p.charAt(i) >= '0' && p.charAt(i) <= '9') 
-    			{
-    			if(start == 0)
-    				start = i;
-    			}
-    		else if (start > 0) {
-    			String wcTail = ".*" + p.substring(start + 1);
-    	    	String wc = p.substring(0, i);
-    	    	int size = tails.length;
-    	    	if(size == 0) {
-    	    		newTails = new String[2];
-    	    		newTails[0] = p.substring(i);
-    	    		newTails[1] = wcTail;
-    	    		
-    	    	} else {
-    	    		newTails = new String[size * 2];
-	    	    	for(int t = 0; t < size; t++) {
-	    	    		newTails[t] = p.substring(i)+tails[t];
-	    	    	}
-	    	    	for(int t = size; t < size * 2; t++) {
-	    	    		newTails[t] = wcTail+tails[t - size];
-	    	    	}
-    	    	}
-    	    	for(int t = 0; t < newTails.length; t++) {
-        	    	Parameter param = new Parameter(wc + newTails[t]); 
-	    	    	if(_exists(param)) {
-	    	    		return param;
-	    	    	}
-	    	    }
-   	    		return wildcardParam(p.substring(0, i), newTails);
-    	    	}
-    		}
-    	return null;
-    	
-    	}
-    
     /**
      * Searches down through databases to find a given parameter, whose value
      * must be a full Class name, and the class must be a descendent of but not
@@ -458,22 +429,16 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     public Object getInstanceForParameter(Parameter parameter, Parameter defaultParameter, Class mustCastTosuperclass) throws ParamClassLoadException 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        Parameter p;
-        if (_exists(parameter))
-            p = parameter;
-        else if (_exists(defaultParameter))
+       if (p == null && _exists(defaultParameter))
             p = defaultParameter;
-        else {
-        	Parameter wildcardParam = wcParam(parameter);
-        	if(wildcardParam != null)
-        		p = wildcardParam;
-        	else
-	            throw new ParamClassLoadException(
-	                "No class name provided.\nPARAMETER: "
-	                + parameter
-	                + (defaultParameter == null ? "" : "\n     ALSO: "
-	                    + defaultParameter));
+        else if (p == null) {
+	        throw new ParamClassLoadException(
+	            "No class name provided.\nPARAMETER: "
+	            + parameter
+	            + (defaultParameter == null ? "" : "\n     ALSO: "
+	                + defaultParameter));
         }
         try 
             {
@@ -552,13 +517,11 @@ public class ParameterDatabase extends Properties implements Serializable
         Parameter defaultParameter, Class mustCastTosuperclass)
         throws ParamClassLoadException 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        Parameter p;
-        if (_exists(parameter))
-            p = parameter;
-        else if (_exists(defaultParameter))
+        if (p == null && _exists(defaultParameter))
             p = defaultParameter;
-        else
+        else if (p == null)
             throw new ParamClassLoadException(
                 "No class name provided.\nPARAMETER: "
                 + parameter
@@ -639,13 +602,11 @@ public class ParameterDatabase extends Properties implements Serializable
         Parameter defaultParameter, Class mustCastTosuperclass)
         throws ParamClassLoadException 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        Parameter p;
-        if (_exists(parameter))
-            p = parameter;
-        else if (_exists(defaultParameter))
+        if (p == null && _exists(defaultParameter))
             p = defaultParameter;
-        else
+        else if (p == null)
             throw new ParamClassLoadException(
                 "No class name provided.\nPARAMETER: "
                 + parameter
@@ -699,9 +660,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public boolean getBoolean(Parameter parameter,
         Parameter defaultParameter, boolean defaultValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getBoolean(parameter, defaultValue);
+        if (p != null)
+            return getBoolean(p, defaultValue);
         else
             return getBoolean(defaultParameter, defaultValue);
         }
@@ -715,9 +677,10 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     boolean getBoolean(Parameter parameter, boolean defaultValue) 
         {
-        if (!_exists(parameter))
+    	Parameter p = paramMatch(parameter);
+        if (p == null)
             return defaultValue;
-        return (!get(parameter).equalsIgnoreCase("false"));
+        return (!get(p).equalsIgnoreCase("false"));
         }
 
     /**
@@ -808,16 +771,17 @@ public class ParameterDatabase extends Properties implements Serializable
     /*protected*/ int getInt(Parameter parameter)
         throws NumberFormatException 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                return parseInt(get(parameter));
+                return parseInt(get(p));
                 } 
             catch (NumberFormatException e) 
                 {
                 throw new NumberFormatException("Bad integer ("
-                    + get(parameter) + " ) for parameter " + parameter);
+                    + get(p) + " ) for parameter " + parameter);
                 }
             } 
         else
@@ -835,9 +799,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public int getInt(Parameter parameter, Parameter defaultParameter)
         throws NumberFormatException 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getInt(parameter);
+        if (p != null)
+            return getInt(p);
         else if (_exists(defaultParameter))
             return getInt(defaultParameter);
         else
@@ -856,9 +821,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public int getInt(Parameter parameter, Parameter defaultParameter,
         int minValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getInt(parameter, minValue);
+        if (p != null)
+            return getInt(p, minValue);
         else
             return getInt(defaultParameter, minValue);
         }
@@ -872,11 +838,12 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     /*protected*/ int getInt(Parameter parameter, int minValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                int i = parseInt(get(parameter));
+                int i = parseInt(get(p));
                 if (i < minValue)
                     return minValue - 1;
                 return i;
@@ -899,9 +866,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public int getIntWithDefault(Parameter parameter,
         Parameter defaultParameter, int defaultValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getIntWithDefault(parameter, defaultValue);
+        if (p != null)
+            return getIntWithDefault(p, defaultValue);
         else
             return getIntWithDefault(defaultParameter, defaultValue);
         }
@@ -914,11 +882,12 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     int getIntWithDefault(Parameter parameter, int defaultValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                return parseInt(get(parameter));
+                return parseInt(get(p));
                 } 
             catch (NumberFormatException e) 
                 {
@@ -940,9 +909,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public int getIntWithMax(Parameter parameter,
         Parameter defaultParameter, int minValue, int maxValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getIntWithMax(parameter, minValue, maxValue);
+        if (p != null)
+            return getIntWithMax(p, minValue, maxValue);
         else
             return getIntWithMax(defaultParameter, minValue, maxValue);
         }
@@ -957,11 +927,12 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     int getIntWithMax(Parameter parameter, int minValue, int maxValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                int i = parseInt(get(parameter));
+                int i = parseInt(get(p));
                 if (i < minValue)
                     return minValue - 1;
                 if (i > maxValue)
@@ -980,14 +951,16 @@ public class ParameterDatabase extends Properties implements Serializable
 
     float getFloat(Parameter parameter) throws NumberFormatException
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+
+        if (p != null) 
             {
             try
                 {
                 // For JDK 1.2 and later, this is more efficient...
                 // float i = Float.parseFloat(get(parameter));
                 // ...but we can't use it and still be compatible with JDK 1.1
-                return Float.valueOf(get(parameter)).floatValue(); // what stupidity...
+                return Float.valueOf(get(p)).floatValue(); // what stupidity...
                 } 
             catch (NumberFormatException e) 
                 {
@@ -1009,9 +982,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public float getFloat(Parameter parameter, Parameter defaultParameter)
         throws NumberFormatException 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getFloat(parameter);
+        if (p != null)
+            return getFloat(p);
         else if (_exists(defaultParameter))
             return getFloat(defaultParameter);
         else
@@ -1031,9 +1005,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public float getFloat(Parameter parameter,
         Parameter defaultParameter, double minValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getFloat(parameter, minValue);
+        if (p != null)
+            return getFloat(p, minValue);
         else
             return getFloat(defaultParameter, minValue);
         }
@@ -1047,11 +1022,12 @@ public class ParameterDatabase extends Properties implements Serializable
 
     float getFloat(Parameter parameter, double minValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                float i = Float.valueOf(get(parameter)).floatValue(); // what stupidity...
+                float i = Float.valueOf(get(p)).floatValue(); // what stupidity...
 
                 // For JDK 1.2 and later, this is more efficient...
                 // float i = Float.parseFloat(get(parameter));
@@ -1078,9 +1054,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public float getFloatWithDefault(Parameter parameter,
         Parameter defaultParameter, double defaultValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getFloatWithDefault(parameter, defaultValue);
+        if (p != null)
+            return getFloatWithDefault(p, defaultValue);
         else
             return getFloatWithDefault(defaultParameter, defaultValue);
         }
@@ -1092,14 +1069,15 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     float getFloatWithDefault(Parameter parameter, double defaultValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
                 // For JDK 1.2 and later, this is more efficient...
                 // return Float.parseFloat(get(parameter));
                 // ...but we can't use it and still be compatible with JDK 1.1
-                return Float.valueOf(get(parameter)).floatValue(); // what stupidity...
+                return Float.valueOf(get(p)).floatValue(); // what stupidity...
                 } 
             catch (NumberFormatException e) 
                 {
@@ -1120,8 +1098,9 @@ public class ParameterDatabase extends Properties implements Serializable
     public float getFloatWithMax(Parameter parameter,
         Parameter defaultParameter, double minValue, double maxValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
+        if (p != null)
             return getFloat(parameter, minValue, maxValue);
         else
             return getFloat(defaultParameter, minValue, maxValue);
@@ -1151,11 +1130,12 @@ public class ParameterDatabase extends Properties implements Serializable
 
     float getFloat(Parameter parameter, double minValue, double maxValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                float i = Float.valueOf(get(parameter)).floatValue(); // what stupidity...
+                float i = Float.valueOf(get(p)).floatValue(); // what stupidity...
 
                 // For JDK 1.2 and later, this is more efficient...
                 // float i = Float.parseFloat(get(parameter));
@@ -1178,19 +1158,20 @@ public class ParameterDatabase extends Properties implements Serializable
 
     double getDouble(Parameter parameter) throws NumberFormatException
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
                 // For JDK 1.2 and later, this is more efficient...
                 // double i = Double.parseDouble(get(parameter));
                 // ...but we can't use it and still be compatible with JDK 1.1
-                return Double.valueOf(get(parameter)).doubleValue(); // what stupidity...
+                return Double.valueOf(get(p)).doubleValue(); // what stupidity...
                 } 
             catch (NumberFormatException e) 
                 {
                 throw new NumberFormatException("Bad double ("
-                    + get(parameter) + " ) for parameter " + parameter);
+                    + get(p) + " ) for parameter " + parameter);
                 }
             } 
         else
@@ -1207,9 +1188,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public double getDouble(Parameter parameter, Parameter defaultParameter)
         throws NumberFormatException 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getDouble(parameter);
+        if (p != null)
+            return getDouble(p);
         else if (_exists(defaultParameter))
             return getDouble(defaultParameter);
         else
@@ -1229,9 +1211,11 @@ public class ParameterDatabase extends Properties implements Serializable
     public double getDouble(Parameter parameter,
         Parameter defaultParameter, double minValue) 
         {
+    	Parameter p = paramMatch(parameter);
+
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getDouble(parameter, minValue);
+        if (p != null)
+            return getDouble(p, minValue);
         else
             return getDouble(defaultParameter, minValue);
         }
@@ -1245,11 +1229,13 @@ public class ParameterDatabase extends Properties implements Serializable
 
     double getDouble(Parameter parameter, double minValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+
+        if (p != null) 
             {
             try
                 {
-                double i = Double.valueOf(get(parameter)).doubleValue(); // what stupidity...
+                double i = Double.valueOf(get(p)).doubleValue(); // what stupidity...
 
                 // For JDK 1.2 and later, this is more efficient...
                 // double i = Double.parseDouble(get(parameter));
@@ -1278,9 +1264,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public double getDoubleWithMax(Parameter parameter,
         Parameter defaultParameter, double minValue, double maxValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getDouble(parameter, minValue, maxValue);
+        if (p != null)
+            return getDouble(p, minValue, maxValue);
         else
             return getDouble(defaultParameter, minValue, maxValue);
         }
@@ -1309,11 +1296,13 @@ public class ParameterDatabase extends Properties implements Serializable
 
     double getDouble(Parameter parameter, double minValue, double maxValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+
+        if (p != null) 
             {
             try
                 {
-                double i = Double.valueOf(get(parameter)).doubleValue(); // what stupidity...
+                double i = Double.valueOf(get(p)).doubleValue(); // what stupidity...
 
                 // For JDK 1.2 and later, this is more efficient...
                 // double i = Double.parseDouble(get(parameter));
@@ -1342,9 +1331,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public double getDoubleWithDefault(Parameter parameter,
         Parameter defaultParameter, double defaultValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getDoubleWithDefault(parameter, defaultValue);
+        if (p != null)
+            return getDoubleWithDefault(p, defaultValue);
         else
             return getDoubleWithDefault(defaultParameter, defaultValue);
         }
@@ -1356,14 +1346,16 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     double getDoubleWithDefault(Parameter parameter, double defaultValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+
+        if (p != null) 
             {
             try
                 {
                 // For JDK 1.2 and later, this is more efficient...
                 // return Double.parseDouble(get(parameter));
                 // ...but we can't use it and still be compatible with JDK 1.1
-                return Double.valueOf(get(parameter)).doubleValue(); // what stupidity...
+                return Double.valueOf(get(p)).doubleValue(); // what stupidity...
                 } 
             catch (NumberFormatException e) 
                 {
@@ -1384,15 +1376,16 @@ public class ParameterDatabase extends Properties implements Serializable
     /*protected*/ long getLong(Parameter parameter)
         throws NumberFormatException 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                return parseLong(get(parameter));
+                return parseLong(get(p));
                 } 
             catch (NumberFormatException e) 
                 {
-                throw new NumberFormatException("Bad long (" + get(parameter)
+                throw new NumberFormatException("Bad long (" + get(p)
                     + " ) for parameter " + parameter);
                 }
             } 
@@ -1411,9 +1404,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public long getLong(Parameter parameter, Parameter defaultParameter)
         throws NumberFormatException 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getLong(parameter);
+        if (p != null)
+            return getLong(p);
         else if (_exists(defaultParameter))
             return getLong(defaultParameter);
         else
@@ -1433,9 +1427,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public long getLong(Parameter parameter, Parameter defaultParameter,
         long minValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getLong(parameter, minValue);
+        if (p != null)
+            return getLong(p, minValue);
         else
             return getLong(defaultParameter, minValue);
         }
@@ -1449,11 +1444,12 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     long getLong(Parameter parameter, long minValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                long i = parseLong(get(parameter));
+                long i = parseLong(get(p));
                 if (i < minValue)
                     return minValue - 1;
                 return i;
@@ -1476,9 +1472,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public long getLongWithDefault(Parameter parameter,
         Parameter defaultParameter, long defaultValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getLongWithDefault(parameter, defaultValue);
+        if (p != null)
+            return getLongWithDefault(p, defaultValue);
         else
             return getLongWithDefault(defaultParameter, defaultValue);
         }
@@ -1491,11 +1488,12 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     long getLongWithDefault(Parameter parameter, long defaultValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                return parseLong(get(parameter));
+                return parseLong(get(p));
                 } 
             catch (NumberFormatException e) 
                 {
@@ -1516,9 +1514,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public long getLongWithMax(Parameter parameter,
         Parameter defaultParameter, long minValue, long maxValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getLong(parameter, minValue, maxValue);
+        if (p != null)
+            return getLong(p, minValue, maxValue);
         else
             return getLong(defaultParameter, minValue, maxValue);
         }
@@ -1532,11 +1531,12 @@ public class ParameterDatabase extends Properties implements Serializable
      */
     long getLongWithMax(Parameter parameter, long minValue, long maxValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
             try
                 {
-                long i = parseLong(get(parameter));
+                long i = parseLong(get(p));
                 if (i < minValue)
                     return minValue - 1;
                 if (i > maxValue)
@@ -1594,9 +1594,10 @@ public class ParameterDatabase extends Properties implements Serializable
 
     public File getFile(Parameter parameter, Parameter defaultParameter) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getFile(parameter);
+        if (p != null)
+            return getFile(p);
         else
             return getFile(defaultParameter);
         }
@@ -1615,9 +1616,10 @@ public class ParameterDatabase extends Properties implements Serializable
 
     File getFile(Parameter parameter) 
         {
-        if (_exists(parameter)) 
+    	Parameter pa = paramMatch(parameter);
+        if (pa != null) 
             {
-            String p = get(parameter);
+            String p = get(pa);
             if (p == null)
                 return null;
             if (p.startsWith(C_HERE))
@@ -1629,7 +1631,7 @@ public class ParameterDatabase extends Properties implements Serializable
                 if (f.isAbsolute())
                     return f;
                 else
-                    return new File(directoryFor(parameter), p);
+                    return new File(directoryFor(pa), p);
                 }
             } 
         else
@@ -1652,9 +1654,10 @@ public class ParameterDatabase extends Properties implements Serializable
 
     public InputStream getResource(Parameter parameter, Parameter defaultParameter)
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getResource(parameter);
+        if (p != null)
+            return getResource(p);
         else
             return getResource(defaultParameter);
         }
@@ -1672,13 +1675,14 @@ public class ParameterDatabase extends Properties implements Serializable
         {
         try
             {
-            if (_exists(parameter)) 
+        	Parameter pa = paramMatch(parameter);
+            if (pa != null) 
                 {
-                String p = get(parameter);
+                String p = get(pa);
                 if (p == null)
                     return null;
                 if (p.startsWith(C_HERE))
-                    return new FileInputStream(getFile(parameter));
+                    return new FileInputStream(getFile(pa));
                 else if (p.startsWith(C_CLASS))
                     {
                     int i = indexOfFirstWhitespace(p);
@@ -1693,14 +1697,14 @@ public class ParameterDatabase extends Properties implements Serializable
                     File f = new File(p);
                     if (f.isAbsolute())
                         return new FileInputStream(f);
-                    Class c = getLocation(parameter.param).relativeClass;
-                    String rp = getLocation(parameter.param).relativePath;
+                    Class c = getLocation(pa.param).relativeClass;
+                    String rp = getLocation(pa.param).relativePath;
                     if (c != null)
                         {
                         return c.getResourceAsStream(new File(new File(rp).getParent(), p).getPath());
                         }
                     else
-                        return new FileInputStream(new File(directoryFor(parameter), p));
+                        return new FileInputStream(new File(directoryFor(pa), p));
                     }
                 } 
             else
@@ -1719,9 +1723,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public synchronized String getString(Parameter parameter,
         Parameter defaultParameter) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getString(parameter);
+        if (p != null)
+            return getString(p);
         else
             return getString(defaultParameter);
         }
@@ -1734,8 +1739,9 @@ public class ParameterDatabase extends Properties implements Serializable
 
     /*protected*/ synchronized String getString(Parameter parameter) 
         {
-        if (_exists(parameter))
-            return get(parameter);
+    	Parameter p = paramMatch(parameter);
+        if (p != null)
+            return get(p);
         else
             return null;
         }
@@ -1748,9 +1754,10 @@ public class ParameterDatabase extends Properties implements Serializable
     public String getStringWithDefault(Parameter parameter,
         Parameter defaultParameter, String defaultValue) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, false);
-        if (_exists(parameter))
-            return getStringWithDefault(parameter, defaultValue);
+        if (p != null)
+            return getStringWithDefault(p, defaultValue);
         else
             return getStringWithDefault(defaultParameter, defaultValue);
         }
@@ -1763,9 +1770,10 @@ public class ParameterDatabase extends Properties implements Serializable
     /*protected*/ String getStringWithDefault(Parameter parameter,
         String defaultValue) 
         {
-        if (_exists(parameter)) 
+    	Parameter p = paramMatch(parameter);
+        if (p != null) 
             {
-            String result = get(parameter);
+            String result = get(p);
             if (result == null) 
                 {
                 if (defaultValue == null)
@@ -1991,8 +1999,9 @@ public class ParameterDatabase extends Properties implements Serializable
     public synchronized boolean exists(Parameter parameter,
         Parameter defaultParameter) 
         {
+    	Parameter p = paramMatch(parameter);
         printGotten(parameter, defaultParameter, true);
-        if (exists(parameter))
+        if (p != null)
             return true;
         if (exists(defaultParameter))
             return true;
@@ -2202,7 +2211,8 @@ public class ParameterDatabase extends Properties implements Serializable
     public Set getShadowedValues(Parameter parameter) 
         {
         Set vals = new HashSet();
-        vals = _getShadowedValues(parameter, vals);
+    	Parameter p = paramMatch(parameter);
+        vals = _getShadowedValues(p, vals);
         uncheck();
         return vals;
         }
@@ -2215,7 +2225,8 @@ public class ParameterDatabase extends Properties implements Serializable
 
     File directoryFor(Parameter parameter) 
         {
-        File result = _directoryFor(parameter);
+    	Parameter p = paramMatch(parameter);
+        File result = _directoryFor(p);
         uncheck();
         return result;
         }
@@ -3035,10 +3046,116 @@ public class ParameterDatabase extends Properties implements Serializable
             }
         }
     
+    private Parameter paramMatch(Parameter parameter) 
+	{
+	if(parameter == null)
+		return null;
+	if(_exists(parameter))
+		return parameter;
+	return paramMatch(parameter.toString(), new String[] {});
+	}
+
+private Parameter paramMatch(String par, String[] tails) 
+	{
+	String[] newTails;
+	int start = -1;
+	for(int i = par.length() - 1; i >= 0; i--) 
+		{
+		if(par.charAt(i) >= '0' && par.charAt(i) <= '9') 
+			{
+			if(start == -1)
+				start = i;
+			}
+		else if (start != -1) 
+			{
+			String tail = ".*" + par.substring(start + 1);
+	    	String head = par.substring(0, i);
+	    	int size = tails.length;
+	    	if(size == 0) 
+	    		{
+    	    	Parameter param = new Parameter(head + tail); 
+    	    	if(_exists(param)) 
+    	    		return param;
+	    		newTails = new String[2];
+	    		newTails[0] = par.substring(i);
+	    		newTails[1] = tail;
+	    		} 
+	    	else 
+	    		{
+	    		newTails = new String[size * 2];
+    	    	for(int t = 0; t < newTails.length; t++) 
+    	    		{
+    	    		if(t < size)
+    	    			newTails[t] = par.substring(i)+tails[t];
+    	    		else
+    	    			newTails[t] = tail+tails[t - size];
+        	    	Parameter param = new Parameter(head + newTails[t]); 
+	    	    	if(_exists(param)) 
+	    	    		return param;
+    	    		}
+	    		}
+	    		return paramMatch(head, newTails);
+	    	}
+		}
+	return null;
+	}
+
+	private static void testParamMatch() {
+    	ParameterDatabase pd = new ParameterDatabase();
+    	pd.put("a.*", "1");
+    	assert(pd.getInt(new Parameter("a.1")) == 1);
+    	pd.put("a.1", "2");
+    	assert(pd.getInt(new Parameter("a.1")) == 2);
+    	pd.put("a.*.b.1.c", "3");
+    	pd.put("a.5.b.1.c", "4");
+    	assert(pd.getInt(new Parameter("a.1.b.1.c")) == 3);
+    	assert(pd.getInt(new Parameter("a.1000.b.1.c")) == 3);
+    	assert(pd.getInt(new Parameter("a.5.b.1.c")) == 4);
+    	try {
+    		pd.getInt(new Parameter("a.1.b.2.c"));
+    		assert(false);
+    	} catch (NumberFormatException e) {
+    		assert(true);
+    	}
+    	pd.put("aaa.1.b.*.c.*", "5");
+    	pd.put("a.*.bbbb.*.c.*", "6");
+    	assert(pd.getInt(new Parameter("aaa.1.b.666.c.123")) == 5);
+    	assert(pd.getInt(new Parameter("a.2.bbbb.666.c.123")) == 6);
+    	
+    	pd.put("a.1.b.*", "true");
+    	assert(pd.getBoolean(new Parameter("a.1.b.9999"), false) == true);
+    	assert(pd.getBoolean(new Parameter("a.2.b.9999"), false) == false);
+    	
+    	pd.put("breadthreads", "7");
+    	assert(pd.getInt(new Parameter("breadthreads")) == 7);
+    	
+    	pd.put("class.*", "java.util.ArrayList");
+    	assert(pd.getInstanceForParameter(new Parameter("class.500"), null, Object.class) instanceof ArrayList);
+
+    	pd.put("class.*.x", "java.util.HashSet");
+    	assert(pd.getInstanceForParameter(new Parameter("class.500.x"), null, Object.class) instanceof HashSet);
+    	
+    	String p = "";
+    	String m = "";
+    	for(int i = 0; i < 10; i++) 
+    		{
+    		p += "a.*.";
+    		m += "a."+(((int)Math.random() * 999999))+".";
+    		}
+    	p += "x";
+    	m += "x";
+    	pd.put(p, "8.99");
+    	assert(pd.getDouble(new Parameter(m)) == 8.99);
+    }
+
     /** Test the ParameterDatabase */
     public static void main(String[] args)
         throws FileNotFoundException, IOException 
         {
+    	
+        testParamMatch();
+        if(args.length <= 0)
+        	return;
         ParameterDatabase pd = new ParameterDatabase(new File(args[0]), args);
         pd.set(new Parameter("Hi there"), "Whatever");
         pd.set(new Parameter(new String[] { "1", "2", "3" }), " Whatever ");
@@ -3050,6 +3167,5 @@ public class ParameterDatabase extends Properties implements Serializable
         System.err.println("\n\n PRINTING ONLY VALID PARAMETERS \n\n");
         pd.list(new PrintWriter(System.err, true), false);
         }
-
     }
 
